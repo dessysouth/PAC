@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Create Instructor Profile</title>
+  </head>
+  <body>
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }} {{ form.firstname.label }} {{ form.firstname()
+      }}<br />
+      {{ form.lastname.label }} {{ form.lastname() }}<br />
+      {{ form.phone_number.label }} {{ form.phone_number() }}<br />
+      {{ form.house_address.label }} {{ form.house_address() }}<br />
+      {{ form.profile_image.label }} {{ form.profile_image() }}<br />
+      {{ form.submit() }}
+    </form>
+  </body>
+</html>

@@ -808,7 +808,7 @@ h5,
   }
 }
 .intro-section h1 {
-  font-size: 7rem;
+  font-size: 4rem;
   font-weight: 900;
   color: #fff;
 }
@@ -1257,7 +1257,30 @@ h5,
 .course-1-item .course-1-content .desc {
   font-size: 15px;
 }
+/* Arrow Up Button Style */
+.back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: none;
+  width: 50px;
+  height: 50px;
+  background-color: #007bff; /* Change this to match your site's color scheme */
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  font-size: 30px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  cursor: pointer;
+  text-decoration: none;
+}
 
+.back-to-top:hover {
+  background-color: #0056b3; /* Change this to match your site's color scheme */
+}
+/* end of back-to-top */
 .footer {
   padding: 4rem 0;
   background: #183661;

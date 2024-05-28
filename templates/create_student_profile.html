@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PAC || Add Course</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/jquery-ui.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/owl.carousel.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/aos.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/jquery.mb.YTPlayer.min.css') }}"
+      media="all"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='fonts/icomoon/style.css') }}"
+    />
+
+    <style>
+      body {
+        background-image: url("{{ url_for('static', filename='images/hero_1.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .container {
+        width: 60%;
+        margin: auto;
+        background-color: rgba(127, 255, 212, 0.395);
+        margin-top: 10px;
+        padding-bottom: 60px;
+        border-radius: 10px;
+      }
+      h1 {
+        width: 60%;
+        margin: 0 auto;
+        color: #000;
+      }
+      input {
+        width: 50%;
+      }
+      textarea {
+        margin-top: 20px;
+        width: 50%;
+        height: 100px;
+      }
+      label {
+        color: #000;
+        font-weight: bold;
+      }
+      button {
+        border: none;
+        float: right;
+        padding: 10px;
+        border-radius: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Create Student Profile</h1>
+    <div class="container">
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+          {{ form.firstname.label }}<br />
+          {{ form.firstname(size=32) }}<br />
+        </div>
+        <div>
+          {{ form.lastname.label }}<br />
+          {{ form.lastname(size=32) }}<br />
+        </div>
+        <div>
+          {{ form.middlename.label }}<br />
+          {{ form.middlename(size=32) }}<br />
+        </div>
+        <div>
+          {{ form.phone_number.label }}<br />
+          {{ form.phone_number(size=32) }}<br />
+        </div>
+        <div>
+          {{ form.house_address.label }}<br />
+          {{ form.house_address(size=64) }}<br />
+        </div>
+        <div>
+          {{ form.profile_image.label }}<br />
+          {{ form.profile_image() }}<br />
+        </div>
+        <div>{{ form.submit() }}</div>
+      </form>
+    </div>
+  </body>
+</html>

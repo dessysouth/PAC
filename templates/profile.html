@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+  </head>
+  <body>
+    <h1>Profile</h1>
+    {% if student %}
+    <h2>Student Profile</h2>
+    <p>First Name: {{ student.firstname }}</p>
+    <p>Last Name: {{ student.lastname }}</p>
+    <p>Middle Name: {{ student.middlename }}</p>
+    <p>Phone Number: {{ student.phone_number }}</p>
+    <p>House Address: {{ student.house_address }}</p>
+    <img
+      src="{{ url_for('static', filename='profile_images/' + student.profile_image) }}"
+      alt="Profile Image"
+    />
+    {% elif instructor %}
+    <h2>Instructor Profile</h2>
+    <p>First Name: {{ instructor.firstname }}</p>
+    <p>Last Name: {{ instructor.lastname }}</p>
+    <p>Middle Name: {{ student.middlename }}</p>
+    <p>Phone Number: {{ instructor.phone_number }}</p>
+    <p>House Address: {{ student.house_address }}</p>
+    <img
+      src="{{ url_for('static', filename='profile_images/' + instructor.profile_image) }}"
+      alt="Profile Image"
+    />
+    {% endif %}
+  </body>
+</html>

@@ -87,16 +87,17 @@
                 <li>
                     <a href="{{url_for('contact')}}" class="nav-link text-left">Contact Us</a>
                 </li>
+                <li style="margin-left: 12rem; ">
+                  <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="color: #51be78;" class="icon-facebook"></span></a>
+                  <a href="https://twitter.com/ArtsPelah9167"><span style="color: #51be78;" class="icon-twitter"></span></a>
+                  <a href="#"><span style="color: #51be78;" class="icon-linkedin"></span></a>
+                </li>
               </ul>
             </nav>
 
           </div>
           <div class="ml-auto">
             <div class="social-wrap">
-              <a href="https://web.facebook.com/profile.php?id=61558722697407"><span class="icon-facebook"></span></a>
-              <a href="https://twitter.com/ArtsPelah9167"><span class="icon-twitter"></span></a>
-              <a href="#"><span class="icon-linkedin"></span></a>
-
               <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
                 class="icon-menu h3"></span></a>
             </div>
@@ -130,29 +131,35 @@
 
             <div class="row justify-content-center">
                 <div class="col-md-5">
-                    <form class="row">
+                    <form class="row" method="POST">
                         <div class="col-md-12 form-group">
                             <label for="username">Username</label>
-                            <input type="text" id="username" class="form-control form-control-lg">
+                            <input type="text" name="username" id="username" class="form-control form-control-lg">
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" class="form-control form-control-lg">
+                            <input type="email" name="email" id="email" class="form-control form-control-lg">
                         </div>
                         <div class="col-md-12 form-group">
                             <label for="pword">Password</label>
-                            <input type="password" id="pword" class="form-control form-control-lg">
+                            <input type="password" name="password1" id="pword" class="form-control form-control-lg">
                         </div>
                         <div class="col-md-12 form-group">
-                            <label for="pword2">Re-type Password</label>
-                            <input type="password" id="pword2" class="form-control form-control-lg">
+                            <label for="pword2"> Password</label>
+                            <input type="password" name="password2" id="pword2" class="form-control form-control-lg">
                         </div>
+                        <select name="role">
+                          <option value="student">Student</option>
+                          <option value="instructor">Instructor</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                        <div class="row">
+                          <div class="col-12">
+                              <input type="submit" value="Register" class="btn btn-primary btn-lg px-5">
+                          </div>
+                      </div>
                     </form>
-                    <div class="row">
-                        <div class="col-12">
-                            <input type="submit" value="Register" class="btn btn-primary btn-lg px-5">
-                        </div>
-                    </div>
+
                 </div>
             </div>
           
