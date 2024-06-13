@@ -5,31 +5,17 @@
   <title>PAC || Register</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
-
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
-
   <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
-  
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mb.YTPlayer.min.css') }}" media="all" type="text/css">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
   <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
-
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -54,8 +40,8 @@
             <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> pelahartscollege@gmail.com</a> 
           </div>
           <div class="col-lg-3 text-right">
-            <a href="{{url_for('login')}}" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
-            <a href="{{url_for('register')}}" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+            <a href="{{url_for('auth.login')}}" class="small mr-3"><span class="icon-unlock-alt"></span> Log In</a>
+            <a href="{{url_for('auth.register')}}" class="small btn btn-danger px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
           </div>
         </div>
       </div>
@@ -65,44 +51,35 @@
       <div class="container">
         <div class="d-flex align-items-center">
           <div class="site-logo">
-            <a href="index.html" class="d-block">
-              <img style="width: 60px;" src="{{url_for('static', filename= 'images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}" alt="Image" class="img-fluid">
+            <a href="{{ url_for('home') }}" class="d-block">
+              <img style="width: 60px" src="{{ url_for('static', filename='images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}" alt="Image" class="img-fluid" />
             </a>
           </div>
           <div class="mr-auto">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li class="active">
-                  <a href="{{url_for('home')}}" class="nav-link text-left">Home</a>
-                </li>
+                <li><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
                 <li class="has-children">
-                  <a href="{{url_for('about')}}" class="nav-link text-left">About Us</a>
+                  <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
-                    <li><a href="{{url_for('about')}}">Our School</a></li>
+                    <li><a href="{{ url_for('about') }}">Our School</a></li>
                   </ul>
                 </li>
-                <li>
-                  <a href="{{url_for('courses')}}" class="nav-link text-left">Courses</a>
-                </li>
-                <li>
-                    <a href="{{url_for('contact')}}" class="nav-link text-left">Contact Us</a>
-                </li>
-                <li style="margin-left: 12rem; ">
-                  <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="color: #51be78;" class="icon-facebook"></span></a>
-                  <a href="https://twitter.com/ArtsPelah9167"><span style="color: #51be78;" class="icon-twitter"></span></a>
-                  <a href="#"><span style="color: #51be78;" class="icon-linkedin"></span></a>
-                </li>
+                <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
+                <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>
+                
+      
+                <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="background-color: #ff5a4b; color: #fff; padding: 10px; margin-left: 27rem;" class="icon-facebook"></span></a>
+                  <a href="https://twitter.com/ArtsPelah9167"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-twitter"></span></a>
+                  <a href="#"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-linkedin"></span></a>
               </ul>
             </nav>
-
           </div>
           <div class="ml-auto">
             <div class="social-wrap">
-              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
-                class="icon-menu h3"></span></a>
+              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a>
             </div>
           </div>
-         
         </div>
       </div>
     </header>
@@ -126,44 +103,42 @@
       </div>
     </div>
 
-    <div class="site-section">
-        <div class="container">
-
-            <div class="row justify-content-center">
-                <div class="col-md-5">
-                    <form class="row" method="POST">
-                        <div class="col-md-12 form-group">
-                            <label for="username">Username</label>
-                            <input type="text" name="username" id="username" class="form-control form-control-lg">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control form-control-lg">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <label for="pword">Password</label>
-                            <input type="password" name="password1" id="pword" class="form-control form-control-lg">
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <label for="pword2"> Password</label>
-                            <input type="password" name="password2" id="pword2" class="form-control form-control-lg">
-                        </div>
-                        <select name="role">
-                          <option value="student">Student</option>
-                          <option value="instructor">Instructor</option>
-                          <option value="admin">Admin</option>
-                        </select>
-                        <div class="row">
-                          <div class="col-12">
-                              <input type="submit" value="Register" class="btn btn-primary btn-lg px-5">
-                          </div>
-                      </div>
-                    </form>
-
+    <div class="site-section" style="background-image: url('{{ url_for('static', filename='images/hero_1.jpg') }}');">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-5">
+            <form class="row" method="POST">
+              <div class="col-md-12 form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" class="form-control form-control-lg">
+              </div>
+              <div class="col-md-12 form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control form-control-lg">
+              </div>
+              <div class="col-md-12 form-group">
+                <label for="pword">Password</label>
+                <input type="password" name="password1" id="pword" class="form-control form-control-lg">
+              </div>
+              <div class="col-md-12 form-group">
+                <label for="pword2"> Password</label>
+                <input type="password" name="password2" id="pword2" class="form-control form-control-lg">
+              </div>
+              <!-- <select name="role" style="margin-left: 22px;" class="btn btn-danger btn-lg px-5>
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+                <option value="admin">Admin</option>
+                <option value="student">Student</option>
+              </select> -->
+              <div class="row">
+                <div class="col-12">
+                  <input type="submit" value="Register" class="btn btn-danger btn-lg px-5" style="margin-left: 130px;">
                 </div>
-            </div>
-          
-        </div>
+              </div>
+            </form>
+          </div>
+        </div> 
+      </div>
     </div>
 
     <div class="footer">
@@ -233,7 +208,6 @@
   <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.mb.YTPlayer.min.js') }}"></script>

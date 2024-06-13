@@ -1,12 +1,12 @@
 jQuery(document).ready(function ($) {
   "use strict";
 
-  // AOS initialization
-  AOS.init({
-    duration: 800,
-    easing: "ease-in-out",
-    once: true,
-  });
+  // AOS initialization (commented out as it's not being used)
+  // AOS.init({
+  //   duration: 800,
+  //   easing: "ease-in-out",
+  //   once: true,
+  // });
 
   // Function to remove loader
   var removeLoader = function () {
@@ -95,41 +95,47 @@ jQuery(document).ready(function ($) {
 
   // Function to handle sticky header
   var siteSticky = function () {
-    $(".js-sticky-header").sticky({ topSpacing: 0 });
+    if ($(".js-sticky-header").length) {
+      $(".js-sticky-header").sticky({ topSpacing: 0 });
+    }
   };
   siteSticky();
 
   // Hero slider
-  $(".hero-slide").owlCarousel({
-    items: 1,
-    loop: true,
-    autoplay: true,
-    nav: true,
-    dots: true,
-    navText: [
-      '<span class="icon-arrow_back">',
-      '<span class="icon-arrow_forward">',
-    ],
-    smartSpeed: 1000,
-  });
+  if ($(".hero-slide").length) {
+    $(".hero-slide").owlCarousel({
+      items: 1,
+      loop: true,
+      autoplay: true,
+      nav: true,
+      dots: true,
+      navText: [
+        '<span class="icon-arrow_back">',
+        '<span class="icon-arrow_forward">',
+      ],
+      smartSpeed: 1000,
+    });
+  }
 
   // Function to handle back-to-top button
   var backToTopButton = document.getElementById("back-to-top");
 
-  window.onscroll = function () {
-    if (
-      document.body.scrollTop > 20 ||
-      document.documentElement.scrollTop > 20
-    ) {
-      backToTopButton.style.display = "block";
-    } else {
-      backToTopButton.style.display = "none";
-    }
-  };
+  if (backToTopButton) {
+    window.onscroll = function () {
+      if (
+        document.body.scrollTop > 20 ||
+        document.documentElement.scrollTop > 20
+      ) {
+        backToTopButton.style.display = "block";
+      } else {
+        backToTopButton.style.display = "none";
+      }
+    };
 
-  backToTopButton.addEventListener("click", function (event) {
-    event.preventDefault();
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-  });
+    backToTopButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+  }
 });

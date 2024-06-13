@@ -1,64 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PAC|| Home</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-
-    <link
-      href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/jquery-ui.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/owl.carousel.min.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/aos.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/jquery.mb.YTPlayer.min.css') }}"
-      media="all"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='fonts/icomoon/style.css') }}"
-    />
+    <title>PAC || Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mb.YTPlayer.min.css') }}" media="all" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+    <style>
+     
+    </style>
   </head>
 
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -77,9 +36,9 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-lg-8 d-none d-lg-block">
-              <a href="{{ url_for('contact') }}" class="small mr-2"
+              <a href="{{ url_for('contact') }}" class="small mr-3"
                 ><span class="icon-question-circle-o mr-2"></span> Have a
-                question?</a
+                questions?</a
               >
               <a href="#" class="small mr-3"
                 ><span class="icon-phone2 mr-2"></span> +234 810 586 0532</a
@@ -91,100 +50,75 @@
             </div>
             <div class="col-lg-4 text-right">
               <div class="row">
-                  <div class="col">
-                      {% if current_user.is_authenticated %}
-                          <div class="user-info">
-                              <h2 class="small mr-2" style="font-size: 20px; display: inline;">Welcome, {{ current_user.username }}!</h2>
-                              {% if current_user.student_profile %}
-                                  <img src="{{ url_for('static', filename='profile_images/' + current_user.student_profile.profile_image) }}" alt="Profile Image" class="img-fluid" style="max-width: 50px; border-radius: 50%;">
-                              {% endif %}
-                          </div>
-                          <a href="{{ url_for('logout') }}" class="small mr-2">Logout</a>
-                      {% else %}
-                          <a href="{{ url_for('login') }}" class="small mr-2">
-                              <span class="icon-unlock-alt"></span> Log In
-                          </a>
-                          <a href="{{ url_for('register') }}" class="small btn btn-primary px-4 py-2 rounded-0">
-                              <span class="icon-users"></span> Register
-                          </a>
+                <div class="col">
+                  
+                  {% if current_user.is_authenticated %}
+                  <div class="user-info">
+                      <h2 class="small mr-2" style="font-size: 20px; display: inline;">Welcome, {{ current_user.username }}!</h2>
+                      {% if current_user.student_profile and current_user.student_profile.profile_image %}
+                      <img src="{{ url_for('static', filename='uploads/' + current_user.student_profile.profile_image) }}" alt="Profile Image" class="img-fluid" style="max-width: 50px; border-radius: 50%; margin-left: 10px;">
                       {% endif %}
                   </div>
+                  <a href="{{ url_for('auth.logout') }}" class="small mr-2">Logout</a>
+                  {% else %}
+                  <a href="{{ url_for('auth.login') }}" class="small mr-2"><span class="icon-unlock-alt"></span> Log In</a>
+                  <a href="{{ url_for('auth.register') }}" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+                  {% endif %}
+                </div>
+                <div class="dropdown">
+                  <a href="#" class="dropdown-toggle" id="cartDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #fff;">
+                      <span class="icon-shopping-cart" style="position: relative; color: #000; width: 100px;">
+                        <span class="badge badge-pill custom-badge" style="position: absolute; top: -10px; right: -10px; width: 10px; height: 10px; background-color: #ff5a4b;">
+                              {{ g.cart_count }}
+                          </span>
+                      </span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cartDropdown">
+                      <h6 class="dropdown-header">Cart Items</h6>
+                      {% for item in g.cart_items %}
+                      <a class="dropdown-item" href="#">{{ item.course.title }}</a>
+                      {% endfor %}
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item text-center" href="{{ url_for('student.view_cart') }}">View Cart</a>
+                  </div>
+                </div>            
               </div>
             </div>
-          
           </div>
+        </div>
       </div>
-
-      <header
-        class="site-navbar py-4 js-sticky-header site-navbar-target"
-        role="banner"
-      >
+      
+      <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
         <div class="container">
           <div class="d-flex align-items-center">
             <div class="site-logo">
               <a href="{{ url_for('home') }}" class="d-block">
-                <img
-                  style="width: 60px"
-                  src="{{ url_for('static', filename='images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}"
-                  alt="Image"
-                  class="img-fluid"
-                />
+                <img style="width: 60px" src="{{ url_for('static', filename='images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}" alt="Image" class="img-fluid" />
               </a>
             </div>
             <div class="mr-auto">
-              <nav
-                class="site-navigation position-relative text-right"
-                role="navigation"
-              >
-              <ul>
-                
-                {% if current_user.is_authenticated %}
-                    {% if current_user.role == 'instructor' %}
-                        <li>
-                            <a href="{{ url_for('instructor_home') }}">Instructor Home</a>
-                        </li>
-                    {% elif current_user.role == 'student' %}
-                        <li>
-                            <a href="{{ url_for('home') }}">Student Dashboard</a>
-                        </li>
-                    {% elif current_user.role == 'admin' %}
-                        <li>
-                            <a href="{{ url_for('admin') }}">Admin Dashboard</a>
-                        </li>
-                    {% endif %}
-                {% endif %}
+              <nav class="site-navigation position-relative text-right" role="navigation">
+                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                  <li class="active"><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
                   <li class="has-children">
-                    <a href="{{ url_for('about') }}" class="nav-link text-left"
-                      >About Us</a
-                    >
+                    <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
                     <ul class="dropdown">
                       <li><a href="{{ url_for('about') }}">Our School</a></li>
                     </ul>
                   </li>
-                  <li>
-                    <a href="{{ url_for('courses') }}" class="nav-link text-left"
-                      >Courses</a
-                    >
-                  </li>
-                  <li>
-                    <a href="{{ url_for('contact') }}" class="nav-link text-left"
-                      >Contact Us</a
-                    >
-                  </li>
-                  <li style="margin-left: 12rem; ">
-                    <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="color: #51be78;" class="icon-facebook"></span></a>
-                    <a href="https://twitter.com/ArtsPelah9167"><span style="color: #51be78;" class="icon-twitter"></span></a>
-                    <a href="#"><span style="color: #51be78;" class="icon-linkedin"></span></a>
-                  </li>
-                  
+                  <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
+                  <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>
+                  <div style="display: inline; margin-left: 27rem;">
+                    <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="background-color: #ff5a4b; color: #fff; padding: 10px 12px 10px 12px ; " class="icon-facebook"></span></a>
+                    <a href="https://twitter.com/ArtsPelah9167"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-twitter"></span></a>
+                    <a href="#"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-linkedin"></span></a>
+                  </div>
                 </ul>
               </nav>
             </div>
             <div class="ml-auto">
               <div class="social-wrap">
-                <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
-                  class="icon-menu h3"></span>
-                </a>
+                <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a>
               </div>
             </div>
           </div>
@@ -234,7 +168,7 @@
           <div class="row">
             <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
               <div class="feature-1 border">
-                <div class="icon-wrapper bg-primary">
+                <div class="icon-wrapper bg-danger">
                   <span class="flaticon-mortarboard text-white"></span>
                 </div>
                 <div class="feature-1-content">
@@ -248,7 +182,7 @@
             </div>
             <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
               <div class="feature-1 border">
-                <div class="icon-wrapper bg-primary">
+                <div class="icon-wrapper bg-danger">
                   <span class="flaticon-school-material text-white"></span>
                 </div>
                 <div class="feature-1-content">
@@ -262,7 +196,7 @@
             </div>
             <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
               <div class="feature-1 border">
-                <div class="icon-wrapper bg-primary">
+                <div class="icon-wrapper bg-danger">
                   <span class="flaticon-library text-white"></span>
                 </div>
                 <div class="feature-1-content">
@@ -280,43 +214,107 @@
 
       <div class="site-section">
         <div class="container">
-          <div class="row mb-5 justify-content-center text-center">
+          <div class="row  justify-content-center text-center">
             <div class="col-lg-6 mb-5">
               <h2 class="section-title-underline mb-3">
                 <span>Popular Courses</span>
-              </h2>
-              
+              </h2> 
             </div>
           </div>
-
           <div class="row">
-            <div class="col-12">
-              <div class="owl-slide-3 owl-carousel">
-                
-                {% for course in courses %}
-                  <div class="course-1-item">
-                    <figure class="thumbnail">
-                      <a href="{{ url_for('course', course_id=course.id) }}">
-                        <img src="{{ url_for('static', filename='images/' + course.image) }}" alt="Image" class="img-fluid">
-                      </a>
-                      <div class="price">${{ course.price }}</div>
-                      <div class="category"><h3>{{ course.title }}</h3></div>
-                    </figure>
-                    <div class="course-1-content pb-4">
-                     
-                      <h2>{{ course.title }}</h2>
-                      <p class="desc mb-4">{{ course.description }}</p>
-                      <p>
-                        <a href="{{ url_for('course', course_id=course.id) }}" style="margin-top: 33px" class="btn btn-primary rounded-0 px-4">View Course</a>
-                      </p>
-                    </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="course-1-item">
+                <figure class="thumnail">
+                  <a href="#"
+                    ><img
+                      src="{{ url_for('static', filename= 'images/web-development (1).jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                  <div class="price">#300000.00</div>
+                  <div class="category"><h3>Full Stack Web Development</h3></div>
+                </figure>
+                <div class="course-1-content pb-4">
+                  <div class="rating text-center mb-3">
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
                   </div>
-                {% endfor %}
-              
+                  <h2>Full Stack Web Development</h2>
+                  <p>
+                    Gain a solid foundation in front-end and back-end web
+                    development.
+                  </p>
+                  
+                </div>
               </div>
-              <a href="{{ url_for('courses')}}" class="small btn btn-primary rounded-0" style="margin-left: 10px;">View More</a>
             </div>
+  
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="course-1-item">
+                <figure class="thumnail">
+                  <a href="course-single.html"
+                    ><img
+                      src="{{ url_for('static', filename= 'images/sound.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                  <div class="price">#200000.00</div>
+                  <div class="category">
+                    <h3>Sound Design & Production</h3>
+                  </div>
+                </figure>
+                <div class="course-1-content pb-4">
+                  <div class="rating text-center mb-3">
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                  </div>
+                  <h2>Sound Design & Production</h2>
+                  <p>
+                    Enhance your skills in creating professional soundtracks.
+                  </p>
+                  
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="course-1-item">
+                <figure class="thumnail">
+                  <a href="course-single.html"
+                    ><img
+                      src="{{ url_for('static', filename= 'images/cinema_.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                  <div class="price">#450000.00</div>
+                  <div class="category"><h3>Cinematography</h3></div>
+                </figure>
+                <div class="course-1-content pb-4">
+                  <div class="rating text-center mb-3">
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                    <span class="icon-star2 text-warning"></span>
+                  </div>
+                  <h2>Cinematography</h2>
+                  <p>
+                    Master the art of visual storytelling in film and
+                    television.
+                  </p>
+                  
+                </div>
+              </div>
+            </div> 
           </div>
+                    
+          <a href="{{ url_for('courses')}}" class="small btn btn-danger rounded-0">View More</a>
         </div>
       </div>
 
@@ -382,33 +380,168 @@
         </div>
       </div>
 
-
-      <div
-        class="site-section ftco-subscribe-1"
-        style="background-image: url('{{ url_for('static', filename='images/bg_1.jpg') }}')"
-      >
+      <div class="site-section">
         <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-7">
-              <h2>Subscribe to us!</h2>
-              <!-- <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,</p> -->
+          <div class="row mb-5">
+            <div class="col-lg-4">
+              <h2 class="section-title-underline">
+                <span>Testimonials</span>
+              </h2>
             </div>
-            <div class="col-lg-5">
-              <form action="" class="d-flex">
-                <input
-                  type="text"
-                  class="rounded form-control mr-2 py-3"
-                  placeholder="Enter your email"
-                />
-                <button class="btn btn-primary rounded py-3 px-4" type="submit">
-                  Send
-                </button>
-              </form>
+          </div>
+          
+          <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="">
+                <img src="{{url_for('static', filename='images/student1.jpeg') }}" alt="Image" class="img-fluid">
+                <div>
+                  <h3 style="color: #000;">Allison Holmes</h3>
+                  <span style="color: #0000009c; font-weight: bold;">Student</span>
+                </div>
+              </div>
+              <div>
+                <p>&ldquo;Enrolling in Digital Fortress Institute was the best decision I've ever made. The hands-on projects and expert instructors helped me build a solid foundation in coding. I landed my dream job as a developer just two months after graduation!&rdquo;</p>
+              </div>
+            </div>
+  
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="">
+                <img src="{{url_for('static', filename='images/mother.jpg') }}" alt="Image" style="height: 233px;" class="img-fluid">
+                <div>
+                  <h3 style="color: #000;">Allison Holmes</h3>
+                  <span style="color: #0000009c; font-weight: bold;">Parent</span>
+                </div>
+              </div>
+              <div>
+                <p>&ldquo;Digital Fortress Institute exceeded our expectations. My daughter not only gained technical skills but also developed confidence and a passion for coding. The supportive community and top-notch curriculum made all the difference!&ldquo;</p>
+              </div>
+            </div>
+  
+            <div class="col-lg-4">
+              <div class="">
+                <img src="{{url_for('static', filename='images/student-afr.jpeg') }}" alt="Image" class="img-fluid">
+                <div>
+                  <h3 style="color: #000;">Allison Holmes</h3>
+                  <span style="color: #0000009c; font-weight: bold;">Student</span>
+                </div>
+              </div>
+              <div>
+                <p>&ldquo;After years in a different field, I decided to switch to tech and chose Digital Fortress Institute. The comprehensive and practical approach to teaching coding skills prepared me for a successful career transition. I highly recommend this Institute to anyone looking to break into the tech industry!&rdquo;</p>
+              </div>
+            </div>
+          </div>
+            
+  
+        </div>
+      </div>
+
+      <div class="news-updates">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-9">
+               <div class="section-heading">
+                <h2 class="text-black">News &amp; Updates</h2>
+                <a href="#">Read All News</a>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="post-entry-big">
+                    <a href="news-single.html" class="img-link"><img
+                      src="{{ url_for('static', filename= 'images/blog_large_1.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                    <div class="post-content">
+                      <div class="post-meta"> 
+                        <a href="#">August 6, 2024</a>
+                        <span class="mx-1">/</span>
+                        <a href="#">Admission</a>, <a href="#">Updates</a>
+                      </div>
+                      <h3 class="post-heading"><a href="news-single.html">Kids Summer coding class</a></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="post-entry-big horizontal d-flex mb-4">
+                    <a href="news-single.html" class="img-link mr-4"><img
+                      src="{{ url_for('static', filename= 'images/blog_2.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                    <div class="post-content">
+                      <div class="post-meta">
+                        <a href="#">August 6, 2024</a>
+                        <span class="mx-1">/</span>
+                        <a href="#">Admission</a>, <a href="#">Updates</a>
+                      </div>
+                      <h3 class="post-heading"><a href="news-single.html">Summer coding class</a></h3>
+                    </div>
+                  </div>
+  
+                  <div class="post-entry-big horizontal d-flex mb-4">
+                    <a href="news-single.html" class="img-link mr-4"><img
+                      src="{{ url_for('static', filename= 'images/blog_2.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                    <div class="post-content">
+                      <div class="post-meta">
+                        <a href="#">July 4, 2024</a>
+                        <span class="mx-1">/</span>
+                        <a href="#">Admission</a>, <a href="#">Updates</a>
+                      </div>
+                      <h3 class="post-heading"><a href="news-single.html">Python Beginers and Advance Python class</a></h3>
+                    </div>
+                  </div>
+  
+                  <!-- <div class="post-entry-big horizontal d-flex mb-4">
+                    <a href="news-single.html" class="img-link mr-4"><img
+                      src="{{ url_for('static', filename= 'images/blog_2.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  /></a>
+                    <div class="post-content">
+                      <div class="post-meta">
+                        <a href="#">June 6, 2019</a>
+                        <span class="mx-1">/</span>
+                        <a href="#">Admission</a>, <a href="#">Updates</a>
+                      </div>
+                      <h3 class="post-heading"><a href="news-single.html">Campus Camping and Learning Session</a></h3>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="section-heading">
+                <h2 class="text-black">Campus Videos</h2>
+                <a href="#">View All Videos</a>
+              </div>
+              <a href="https://vimeo.com/45830194" class="video-1 mb-4" data-fancybox="" data-ratio="2">
+                <span class="play">
+                  <span class="icon-play"></span>
+                </span>
+                <img
+                      src="{{ url_for('static', filename= 'images/course_1.jpg') }}"
+                      alt="Image"
+                      class="img-fluid"
+                  />
+              </a>
+              <a href="https://vimeo.com/45830194" class="video-1 mb-4" data-fancybox="" data-ratio="2">
+                  <span class="play">
+                    <span class="icon-play"></span>
+                  </span>
+                  <img
+                  src="{{ url_for('static', filename= 'images/course_4.jpg') }}"
+                  alt="Image"
+                  class="img-fluid"
+              />
+                </a>
             </div>
           </div>
         </div>
       </div>
-
+    
       <div class="footer">
         <div class="container">
           <div class="row">
@@ -505,7 +638,6 @@
     <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.mb.YTPlayer.min.js') }}"></script>

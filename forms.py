@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DecimalField, SubmitField, FileField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+
 
 class CourseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
@@ -8,6 +10,7 @@ class CourseForm(FlaskForm):
     price = DecimalField('Price', validators=[DataRequired()])
     category = StringField('Category', validators=[DataRequired()])
     duration = StringField('Duration', validators=[DataRequired()])
+    instructor = StringField('Name of Instructor', validators=[DataRequired()])  # Add this line
     image = FileField('Course Image')
     submit = SubmitField('Save Changes')
 
@@ -19,14 +22,15 @@ class StudentProfileForm(FlaskForm):
     house_address = StringField('House Address', validators=[DataRequired()])
     profile_image = FileField('Profile Image')
     submit = SubmitField('Save Changes')
+    
 
-class InstructorProfileForm(FlaskForm):
-    firstname = StringField('First Name', validators=[DataRequired()])
-    lastname = StringField('Last Name', validators=[DataRequired()])
+class CreateInstructorForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    fullname = StringField('Full Name', validators=[DataRequired()])
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     house_address = StringField('House Address', validators=[DataRequired()])
-    profile_image = FileField('Profile Image')
-    submit = SubmitField('Create Profile')
+    profile_image = FileField('Profile Image', validators=[DataRequired()])
+    submit = SubmitField('Create Instructor')
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -40,3 +44,31 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = StringField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class EditCourseForm(FlaskForm):
+    title = StringField('Course Title', validators=[DataRequired(), Length(max=255)])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    price = DecimalField('Price', validators=[DataRequired(), NumberRange(min=0)], places=2)
+    category = StringField('Category', validators=[DataRequired(), Length(max=255)])
+    duration = StringField('Duration', validators=[DataRequired(), Length(max=255)])
+    instructor = StringField('Instructor', validators=[DataRequired(), Length(max=255)])
+    image = FileField('Course Image')
+
+class EditInstructorForm(FlaskForm):
+    fullname = StringField('Full Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    house_address = StringField('House Address', validators=[DataRequired()])
+    profile_image = FileField('Profile Image')
+    submit = SubmitField('Update Profile')
+
+class CourseMaterialForm(FlaskForm):
+    description = StringField('Description', validators=[DataRequired()])
+    file = FileField('File', validators=[
+        FileRequired(),
+        FileAllowed(['pdf', 'docx', 'pptx', 'txt'], 'Documents only!')
+    ])
+    submit = SubmitField('Upload')
+
+
+

@@ -1,0 +1,35 @@
+<!-- upload_material.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Material</title>
+    <style>
+      .container {
+        width: 60%;
+        margin: 0 auto;
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Upload Material for {{ course.title }}</h1>
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div>
+          {{ form.description.label }}<br />
+          {{ form.description(size=100) }}<br />
+          {{ form.description.errors }}
+        </div>
+        <div>
+          {{ form.file.label }}<br />
+          {{ form.file }}<br />
+          {{ form.file.errors }}
+        </div>
+        <div>{{ form.submit() }}</div>
+      </form>
+    </div>
+  </body>
+</html>

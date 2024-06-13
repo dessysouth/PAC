@@ -20,9 +20,11 @@ a {
   -webkit-transition: 0.3s all ease;
   -o-transition: 0.3s all ease;
   transition: 0.3s all ease;
+  color: #ff5a4b;
 }
 a:hover {
   text-decoration: none;
+  color: #ff5a4b;
 }
 
 h1,
@@ -290,10 +292,10 @@ h5,
   color: #fff;
 }
 .ul-check.success li:before {
-  color: #8bc34a;
+  color: #a10000;
 }
 .ul-check.primary li:before {
-  color: #51be78;
+  color: #ff5a4b;
 }
 
 .select-wrap,
@@ -348,7 +350,7 @@ h5,
   margin-bottom: 0;
 }
 .site-navbar .site-navigation .site-menu .active > a {
-  color: #51be78;
+  color: #ff5a4b;
   display: inline-block;
   padding: 5px 20px;
 }
@@ -370,7 +372,7 @@ h5,
   text-decoration: none !important;
 }
 .site-navbar .site-navigation .site-menu > li > a:hover {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .site-navbar .site-navigation .site-menu .has-children {
   position: relative;
@@ -396,7 +398,7 @@ h5,
   top: 100%;
   position: absolute;
   text-align: left;
-  border-top: 2px solid #51be78;
+  border-top: 2px solid #ff5a4b;
   -webkit-box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.1);
   border-left: 1px solid #edf0f5;
@@ -447,7 +449,7 @@ h5,
   color: #343a40;
 }
 .site-navbar .site-navigation .site-menu .has-children .dropdown .active > a {
-  color: #51be78 !important;
+  color: #ff5a4b !important;
 }
 .site-navbar .site-navigation .site-menu .has-children .dropdown > li {
   list-style: none;
@@ -523,7 +525,7 @@ h5,
 .site-navbar .site-navigation .site-menu .has-children:hover > a,
 .site-navbar .site-navigation .site-menu .has-children:focus > a,
 .site-navbar .site-navigation .site-menu .has-children:active > a {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .site-navbar .site-navigation .site-menu .has-children:hover,
 .site-navbar .site-navigation .site-menu .has-children:focus,
@@ -626,14 +628,14 @@ h5,
   color: #212529;
 }
 .site-mobile-menu .site-nav-wrap a:hover {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .site-mobile-menu .site-nav-wrap li {
   position: relative;
   display: block;
 }
 .site-mobile-menu .site-nav-wrap li .active > a {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .site-mobile-menu .site-nav-wrap .arrow-collapse {
   position: absolute;
@@ -767,13 +769,13 @@ h5,
   text-decoration: none !important;
 }
 .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a:hover {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a.active:after {
-  background: #51be78;
+  background: #ff5a4b;
 }
 .sticky-wrapper.is-sticky .site-navbar .site-menu > li.active > a {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .sticky-wrapper .shrink {
   padding-top: 10px !important;
@@ -830,10 +832,10 @@ h5,
   color: #bdbdbd;
 }
 .custom-breadcrumns a:hover {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .custom-breadcrumns .current {
-  color: #51be78;
+  color: #ff5a4b;
 }
 
 .section-title-underline {
@@ -841,13 +843,13 @@ h5,
 }
 .section-title-underline span {
   display: inline-block;
-  border-bottom: 4px solid #51be78;
+  border-bottom: 4px solid #ff5a4b;
 }
 .section-title-underline.style-2 {
   color: #fff;
 }
 .section-title-underline.style-2 span {
-  border-color: #51be78;
+  border-color: #ff5a4b;
 }
 
 .section-bg {
@@ -875,11 +877,11 @@ h5,
 }
 .section-bg.style-1 .icon {
   font-size: 3.5rem;
-  color: #51be78;
+  color: #ff5a4b;
 }
 .section-bg.style-1 h3 {
   font-size: 20px;
-  color: #51be78;
+  color: #ff5a4b;
   margin-bottom: 30px;
 }
 .section-bg.style-1 p {
@@ -955,7 +957,7 @@ h5,
   color: #303030;
 }
 .news-updates .post-entry-big .post-content .post-heading a:hover {
-  color: #51be78;
+  color: #ff5a4b;
 }
 .news-updates .post-entry-big.horizontal .img-link {
   -webkit-box-flex: 0;
@@ -967,7 +969,7 @@ h5,
   display: inline-block;
   width: 40px;
   height: 40px;
-  background: #51be78;
+  background: #ff5a4b;
   position: relative;
 }
 .social-wrap a > span {
@@ -1128,7 +1130,7 @@ h5,
 }
 .owl-slide-3 .owl-dots .owl-dot.active > span,
 .owl-slide .owl-dots .owl-dot.active > span {
-  background: #51be78;
+  background: #ff5a4b;
 }
 
 .owl-slide .owl-nav {
@@ -1209,7 +1211,7 @@ h5,
 .course-1-item {
   -webkit-box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-  height: 600px;
+  height: 500px;
 }
 .course-1-item figure {
   position: relative;
@@ -1219,7 +1221,7 @@ h5,
   width: 100%;
 }
 .course-1-item .category {
-  background: #51be78;
+  background: #ff5a4b;
   padding: 20px;
 }
 .course-1-item .category h3 {
@@ -1265,7 +1267,7 @@ h5,
   display: none;
   width: 50px;
   height: 50px;
-  background-color: #007bff; /* Change this to match your site's color scheme */
+  background-color: #ff5a4b; /* Change this to match your site's color scheme */
   color: white;
   text-align: center;
   line-height: 50px;
@@ -1278,7 +1280,7 @@ h5,
 }
 
 .back-to-top:hover {
-  background-color: #0056b3; /* Change this to match your site's color scheme */
+  background-color: #ff5a4b; /* Change this to match your site's color scheme */
 }
 /* end of back-to-top */
 .footer {
@@ -1294,6 +1296,9 @@ h5,
 }
 .footer .footer-heading span {
   border-bottom: 3px solid #fff;
+}
+.footer a {
+  color: #fff;
 }
 .footer a:hover {
   color: #fff;

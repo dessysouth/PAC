@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <title>PAC || Contact</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
-
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
@@ -14,12 +12,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mb.YTPlayer.min.css') }}" media="all" type="text/css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
 </head>
-
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
   <div class="site-wrap">
@@ -36,26 +32,45 @@
     <div class="py-2 bg-light">
       <div class="container">
         <div class="row align-items-center">
-          <div class="col-lg-9 d-none d-lg-block">
+          <div class="col-lg-8 d-none d-lg-block">
             <a href="{{ url_for('contact') }}" class="small mr-3"><span class="icon-question-circle-o mr-2"></span> Have a questions?</a> 
             <a href="#" class="small mr-3"><span class="icon-phone2 mr-2"></span> +234 810 586 0532</a> 
             <a href="#" class="small mr-3"><span class="icon-envelope-o mr-2"></span> pelahartscollege@gmail.com</a> 
           </div>
-          <div class="col-lg-3 text-right">
+          <div class="col-lg-4 text-right">
             <div class="row">
               <div class="col">
+                
                 {% if current_user.is_authenticated %}
-                    <h2 class="small mr-3" style="font-size: 20px;">Welcome, {{ current_user.username }}!</h2>
-                    <a href="{{ url_for('logout') }}" class="small mr-3">Logout</a>
+                <div class="user-info">
+                    <h2 class="small mr-2" style="font-size: 20px; display: inline;">Welcome, {{ current_user.username }}!</h2>
+                    {% if current_user.student_profile and current_user.student_profile.profile_image %}
+                    <img src="{{ url_for('static', filename='uploads/' + current_user.student_profile.profile_image) }}" alt="Profile Image" class="img-fluid" style="max-width: 50px; border-radius: 50%; margin-left: 10px;">
+                    {% endif %}
+                </div>
+                <a href="{{ url_for('auth.logout') }}" class="small mr-2">Logout</a>
                 {% else %}
-                    <a href="{{ url_for('login') }}" class="small mr-3">
-                        <span class="icon-unlock-alt"></span> Log In
-                    </a>
-                    <a href="{{ url_for('register') }}" class="small btn btn-primary px-4 py-2 rounded-0">
-                        <span class="icon-users"></span> Register
-                    </a>
+                <a href="{{ url_for('auth.login') }}" class="small mr-2"><span class="icon-unlock-alt"></span> Log In</a>
+                <a href="{{ url_for('auth.register') }}" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
                 {% endif %}
               </div>
+              <div class="dropdown">
+                <a href="#" class="dropdown-toggle" id="cartDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #fff;">
+                    <span class="icon-shopping-cart"  style="position: relative; color: #000;">
+                      <span class="badge badge-pill custom-badge" style="position: absolute; top: -10px; right: -10px; width: 10px; height: 10px; background-color: #ff5a4b;">
+                            {{ cart_count }}
+                        </span>
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cartDropdown">
+                    <h6 class="dropdown-header">Cart Items</h6>
+                    {% for item in cart_items %}
+                    <a class="dropdown-item" href="#">{{ item.course.title }}</a>
+                    {% endfor %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-center" href="{{ url_for('student.view_cart') }}">View Cart</a>
+                </div>
+              </div>           
             </div>
           </div>
         </div>
@@ -63,52 +78,40 @@
     </div>
 
     <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
-
       <div class="container">
         <div class="d-flex align-items-center">
           <div class="site-logo">
             <a href="{{ url_for('home') }}" class="d-block">
-              <img style="width: 60px;" src="{{ url_for('static', filename='images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}" alt="Image" class="img-fluid">
+              <img style="width: 60px" src="{{ url_for('static', filename='images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}" alt="Image" class="img-fluid" />
             </a>
           </div>
           <div class="mr-auto">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li>
-                  <a href="{{ url_for('home') }}" class="nav-link text-left">Home</a>
-                </li>
+                <li><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
                 <li class="has-children">
                   <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
-                    
                     <li><a href="{{ url_for('about') }}">Our School</a></li>
                   </ul>
                 </li>
-                <li>
-                  <a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a>
-                </li>
-                <li class="active">
-                    <a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a>
-                </li>
-                <li style="margin-left: 12rem; ">
-                  <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="color: #51be78;" class="icon-facebook"></span></a>
-                  <a href="https://twitter.com/ArtsPelah9167"><span style="color: #51be78;" class="icon-twitter"></span></a>
-                  <a href="#"><span style="color: #51be78;" class="icon-linkedin"></span></a>
-                </li>
+                <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
+                <li  class="active"><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>
+                
+      
+                <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="background-color: #ff5a4b; color: #fff; padding: 10px; margin-left: 27rem;" class="icon-facebook"></span></a>
+                  <a href="https://twitter.com/ArtsPelah9167"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-twitter"></span></a>
+                  <a href="#"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-linkedin"></span></a>
               </ul>
             </nav>
-
           </div>
           <div class="ml-auto">
             <div class="social-wrap">
-              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span
-                class="icon-menu h3"></span></a>
+              <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a>
             </div>
           </div>
-         
         </div>
       </div>
-
     </header>
   
     <div class="site-section ftco-subscribe-1 site-blocks-cover pb-4" style="background-image: url('{{ url_for('static', filename='images/bg_1.jpg') }}')">
@@ -132,38 +135,40 @@
 
     <div class="site-section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="fname">First Name</label>
-                    <input type="text" id="fname" class="form-control form-control-lg">
+            <form action="{{ url_for('contact') }}" method="POST">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="fname">First Name</label>
+                        <input type="text" id="fname" name="fname" class="form-control form-control-lg">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="lname">Last Name</label>
+                        <input type="text" id="lname" name="lname" class="form-control form-control-lg">
+                    </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <label for="lname">Last Name</label>
-                    <input type="text" id="lname" class="form-control form-control-lg">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="eaddress">Email Address</label>
+                        <input type="text" id="eaddress" name="eaddress" class="form-control form-control-lg">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="tel">Tel. Number</label>
+                        <input type="text" id="tel" name="tel" class="form-control form-control-lg">
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="eaddress">Email Address</label>
-                    <input type="text" id="eaddress" class="form-control form-control-lg">
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="message">Message</label>
+                        <textarea name="message" id="message" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
                 </div>
-                <div class="col-md-6 form-group">
-                    <label for="tel">Tel. Number</label>
-                    <input type="text" id="tel" class="form-control form-control-lg">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 form-group">
-                    <label for="message">Message</label>
-                    <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <input type="submit" value="Send Message" class="btn btn-primary btn-lg px-5">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="submit" value="Send Message" class="btn btn-danger btn-lg px-5">
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -233,27 +238,6 @@
               </ul>
           </div>
 
-          <div class="col-md-4">
-            <h3>Subscribe</h3>
-            <p>
-              Sign up for our newsletter to get the latest updates, news, and
-              events.
-            </p>
-            <form action="#" class="footer-subscribe">
-              <div class="d-flex mb-5">
-                <input
-                  type="text"
-                  class="form-control rounded-0"
-                  placeholder="Email"
-                />
-                <input
-                  type="submit"
-                  class="btn btn-primary rounded-0"
-                  value="Subscribe"
-                />
-              </div>
-            </form>
-          </div>
         </div>
 
         <div class="row">
@@ -287,7 +271,6 @@
   <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.mb.YTPlayer.min.js') }}"></script>

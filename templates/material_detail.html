@@ -1,0 +1,33 @@
+<!-- material_detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Detail</title>
+    <style>
+      h1 {
+        font-size: 60px;
+        color: brown;
+      }
+      p {
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ material.filename }}</h1>
+      <p>{{ material.description }}</p>
+      <a
+        href="{{ url_for('download_material', material_id=material.id) }}"
+        class="btn btn-primary"
+        >Download</a
+      >
+      <a
+        href="{{ url_for('course', course_id=material.course_id) }}"
+        class="btn btn-secondary"
+        >Back to Course</a
+      >
+    </div>
+  </body>
+</html>
