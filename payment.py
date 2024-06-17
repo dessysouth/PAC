@@ -7,7 +7,7 @@ from flask_login import login_required, login_user, logout_user, current_user, L
 
 load_dotenv()
 sk= os.environ.get('secret_key')
-
+app.config['secret_key'] = os.environ.get('secret_key')
 pay =  Blueprint(
     'pay', __name__,
     template_folder='templates',

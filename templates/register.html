@@ -58,7 +58,7 @@
           <div class="mr-auto">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-                <li><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
+                <li class="active"><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
                 <li class="has-children">
                   <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
                   <ul class="dropdown">
@@ -67,11 +67,11 @@
                 </li>
                 <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
                 <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>
-                
-      
-                <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="background-color: #ff5a4b; color: #fff; padding: 10px; margin-left: 27rem;" class="icon-facebook"></span></a>
+                <div style="display: inline; margin-left: 27rem;">
+                  <a href="https://web.facebook.com/profile.php?id=61558722697407"><span style="background-color: #ff5a4b; color: #fff; padding: 10px 12px 10px 12px ; " class="icon-facebook"></span></a>
                   <a href="https://twitter.com/ArtsPelah9167"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-twitter"></span></a>
                   <a href="#"><span style="background-color: #ff5a4b; color: #fff; padding: 10px;" class="icon-linkedin"></span></a>
+                </div>
               </ul>
             </nav>
           </div>

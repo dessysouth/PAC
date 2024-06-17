@@ -2,6 +2,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DecimalField, SubmitField, FileField
 from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
 from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms import StringField, TextAreaField, DecimalField, FileField
+from wtforms.validators import InputRequired, NumberRange
+from wtforms_sqlalchemy.fields import QuerySelectField
+from model import *
 
 
 class CourseForm(FlaskForm):
@@ -46,12 +50,12 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class EditCourseForm(FlaskForm):
-    title = StringField('Course Title', validators=[DataRequired(), Length(max=255)])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    price = DecimalField('Price', validators=[DataRequired(), NumberRange(min=0)], places=2)
-    category = StringField('Category', validators=[DataRequired(), Length(max=255)])
-    duration = StringField('Duration', validators=[DataRequired(), Length(max=255)])
-    instructor = StringField('Instructor', validators=[DataRequired(), Length(max=255)])
+    title = StringField('Title', validators=[InputRequired()])
+    description = TextAreaField('Description', validators=[InputRequired()])
+    price = DecimalField('Price', validators=[InputRequired(), NumberRange(min=0)])
+    category = StringField('Category', validators=[InputRequired()])
+    duration = StringField('Duration', validators=[InputRequired()])
+    instructor = QuerySelectField('Instructor', query_factory=lambda: Instructor.query.all(), get_label='fullname')
     image = FileField('Course Image')
 
 class EditInstructorForm(FlaskForm):
@@ -69,6 +73,4 @@ class CourseMaterialForm(FlaskForm):
         FileAllowed(['pdf', 'docx', 'pptx', 'txt'], 'Documents only!')
     ])
     submit = SubmitField('Upload')
-
-
 

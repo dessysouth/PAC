@@ -153,7 +153,6 @@
           <div class="row align-items-end justify-content-center text-center">
             <div class="col-lg-7">
               <h2 class="mb-0">Payment</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
             </div>
           </div>
         </div>
@@ -167,35 +166,35 @@
       </div>
     </div>
 
-    <div class="site-section ">
+    <div class="site-section">
       <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-5">
-            <h1>Payment for <br> {{ course.title }}</h1>
-            <p>Amount: #{{ course.price }}</p>
-            
-            <form class="row" method="POST" action="/payment">
-              <div class="col-md-12 form-group">
-                  <label for="email">Email <span>*</span></label>
-                  <input 
-                  type="email"
-                  name="email" 
-                  id="email" 
-                  class="form-control form-control-lg"
-                  required>
+          <div class="row justify-content-center">
+              <div class="col-md-5">
+                  <h1>Payment for <br> {{ course.title }}</h1>
+                  <p>Amount: #{{ course.price }}</p>
+                  
+                  <form class="row" method="POST" action="{{ url_for('student.payment', course_id=course.id) }}">
+                      <div class="col-md-12 form-group">
+                          <label for="email">Email <span>*</span></label>
+                          <input 
+                          type="email"
+                          name="email" 
+                          id="email" 
+                          class="form-control form-control-lg"
+                          required>
+                      </div>
+                      <div class="col-md-12 form-group">
+                          <label for="amount">Amount <span>*</span></label>
+                          <input type="number" name="amount" class="form-control form-control-lg" id="amount" required placeholder="Enter amount">
+                      </div>
+                      <div class="row">
+                          <div class="col-12">
+                              <button class="btn btn-danger px-5" style="margin-left: 18px;" type="submit">Submit Payment</button>
+                          </div>
+                      </div>
+                  </form>
               </div>
-              <div class="col-md-12 form-group">
-                  <label for="amount">Amount <span>*</span></label>
-                  <input type="number" name="amount" class="form-control form-control-lg" id="amount" required placeholder="Enter amount">
-              </div>
-              <div class="row">
-                  <div class="col-12">
-                      <button class="btn btn-danger px-5" style="margin-left: 18px;" type="submit">Submit Payment</button>
-                  </div>
-              </div>
-          </form>
           </div>
-        </div>
       </div>
     </div>
 
@@ -271,6 +270,7 @@
   <script src="{{ url_for('static', filename='js/jquery.mb.YTPlayer.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
   <script>
     $(document).ready(function() {
         var userEmail = "{{ current_user.email }}";
@@ -285,6 +285,7 @@
         }
     });
   </script>
+   
 </body>
 
 </html>

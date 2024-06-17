@@ -33,6 +33,16 @@ if not os.path.exists(PROFILE_PICS_FOLDER):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def save_image(file, folder):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(folder, filename)
+        file.save(filepath)
+        return filename
+    else:
+        raise ValueError('File not allowed')
+
+
 @admin.route('/admin', methods=['GET'])
 def admin_dashboard():
     courses = Course.query.all()
@@ -87,7 +97,6 @@ def delete_student(student_id):
     return redirect(url_for('admin.admin_dashboard'))
 
 @admin.route('/create_instructor', methods=['GET', 'POST'])
-# @login_required
 def create_instructor():
     form = CreateInstructorForm()
     if form.validate_on_submit():
@@ -233,28 +242,61 @@ def upload_material(course_id):
     return render_template('upload_material.html', form=form, course=course)
 
 @admin.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
-# @login_required
+# @login_required  # Uncomment if login is required to edit courses
 def edit_course(course_id):
     course = Course.query.get_or_404(course_id)
     form = EditCourseForm(obj=course)
 
     if form.validate_on_submit():
-        form.populate_obj(course)
-        if form.image.data:
-            image_filename = secure_filename(form.image.data.filename)
-            image_path = os.path.join(admin.static_folder, 'course_images', image_filename)
+        title = form.title.data
+        description = form.description.data
+        price = form.price.data
+        category = form.category.data
+        duration = form.duration.data
+        instructor_name = form.instructor.data.fullname  # Assuming instructor.data returns an Instructor instance
+        image = form.image.data
 
+        # Print the received form data for debugging
+        print(f"Received form data: title={title}, description={description}, price={price}, category={category}, duration={duration}, instructor_name={instructor_name}, image={image}")
+
+        if image:
+            image_filename = secure_filename(image.filename)
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
             if not os.path.exists(os.path.dirname(image_path)):
                 os.makedirs(os.path.dirname(image_path))
+            image.save(image_path)
 
-            form.image.data.save(image_path)
-
+            # Remove old image if it exists
             if course.image:
-                old_image_path = os.path.join(admin.static_folder, 'course_images', course.image)
+                old_image_path = os.path.join(app.config['UPLOAD_FOLDER'], course.image)
                 if os.path.exists(old_image_path):
                     os.remove(old_image_path)
 
             course.image = image_filename
+
+        # Fetch the instructor by full name
+        instructor = Instructor.query.filter_by(fullname=instructor_name).first()
+
+        # Debugging print statements
+        if instructor:
+            print(f"Found instructor: {instructor.fullname}")
+        else:
+            print(f"Instructor {instructor_name} not found in the database.")
+
+            # Optionally add the instructor if not found
+            new_instructor = Instructor(fullname=instructor_name)
+            db.session.add(new_instructor)
+            db.session.commit()
+            instructor = new_instructor
+            print(f"Added new instructor: {instructor.fullname}")
+
+        # Update course details
+        course.title = title
+        course.description = description
+        course.price = price
+        course.category = category
+        course.duration = duration
+        course.instructor_id = instructor.id
 
         try:
             db.session.commit()
@@ -262,9 +304,12 @@ def edit_course(course_id):
             return redirect(url_for('admin.admin_dashboard'))
         except Exception as e:
             db.session.rollback()
-            logger.error(f'Error updating course {course_id}: {e}')
-            flash(f'An error occurred: {e}', 'error')
+            flash(f'An error occurred: {e}', 'danger')
+
     return render_template('edit_course.html', form=form, course=course)
+
+
+
 
 @admin.route('/delete_course/<int:course_id>', methods=['POST'])
 # @login_required
@@ -286,7 +331,6 @@ def delete_course(course_id):
     return redirect(url_for('admin.admin_dashboard'))
 
 @admin.route('/cart/remove/<int:cart_id>', methods=['POST'])
-# @login_required
 def admin_remove_from_cart(cart_id):
     if not current_user.is_authenticated or not isinstance(current_user._get_current_object()):
         abort(403)
@@ -296,6 +340,10 @@ def admin_remove_from_cart(cart_id):
     flash('Item removed from cart.', 'success')
     return redirect(url_for('admin.admin_dashboard'))
 
+@admin.route('/admin/payments')
+def admin_payments():
+    payments = Payment.query.filter_by(status='success').all()
+    return render_template('admin/payments.html', payments=payments)
 
 # @admin.route('/register_admin', methods=['GET'])
 # def register_admin():

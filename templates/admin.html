@@ -53,6 +53,118 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='fonts/icomoon/style.css') }}"
     />
+    <style>
+      /* Default styles */
+      .site-section {
+        padding: 20px;
+      }
+
+      .table th,
+      .table td {
+        vertical-align: middle;
+      }
+
+      .table img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Media query for mobile devices */
+      @media (max-width: 768px) {
+        .site-logo {
+          width: 50px;
+        }
+        .col-lg-4 {
+          margin-top: 20px;
+        }
+
+        .nav-tabs .nav-item {
+          flex: 1 1 100%;
+          text-align: center;
+        }
+
+        .nav-tabs .nav-link {
+          padding: 10px 15px;
+        }
+
+        .tab-content .table {
+          width: 100%;
+          overflow-x: auto;
+          display: block;
+        }
+
+        .tab-content .table thead {
+          display: none;
+        }
+
+        .tab-content .table tbody tr {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 1rem;
+        }
+
+        .tab-content .table tbody tr td {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 5px 0;
+        }
+
+        .tab-content .table tbody tr td::before {
+          content: attr(data-label);
+          flex: 1;
+          font-weight: bold;
+          margin-right: 10px;
+        }
+
+        .row.justify-content-center {
+          margin-left: 0 !important;
+        }
+
+        .row.justify-content-center + .row.justify-content-center {
+          margin-top: 20px;
+        }
+
+        .btn-block {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .tab-content .table tbody tr td a,
+        .tab-content .table tbody tr td form {
+          display: block;
+          margin-bottom: 10px;
+          width: 100%;
+        }
+
+        .vertical-buttons {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .vertical-buttons .btn {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .nav-tabs .nav-link {
+          padding: 8px 10px;
+        }
+
+        .tab-content .table tbody tr td {
+          padding: 3px 0;
+        }
+
+        .btn-block {
+          margin-bottom: 15px;
+        }
+      }
+    </style>
   </head>
 
   <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -151,6 +263,18 @@
                 >Payments</a
               >
             </li>
+            <!-- <li class="nav-item">
+              <a
+                class="nav-link"
+                id="course-materials-tab"
+                data-toggle="tab"
+                href="#course-materials"
+                role="tab"
+                aria-controls="course-materials"
+                aria-selected="false"
+                >Course Materials</a
+              >
+            </li> -->
           </ul>
           <!-- Tab Contents -->
           <div class="tab-content" id="adminTabsContent">
@@ -178,23 +302,23 @@
                   <tbody>
                     {% for course in courses %}
                     <tr>
-                      <td>{{ course.id }}</td>
-                      <td>{{ course.title }}</td>
-                      <td>{{ course.category }}</td>
-                      <td>
+                      <td data-label="ID">{{ course.id }}</td>
+                      <td data-label="Title">{{ course.title }}</td>
+                      <td data-label="Category">{{ course.category }}</td>
+                      <td data-label="Instructor">
                         {% if course.instructor %} {{ course.instructor.fullname
                         }} {% else %} No Instructor {% endif %}
                       </td>
-                      <td>{{ course.price }}</td>
-                      <td>{{ course.duration }}</td>
-                      <td>
+                      <td data-label="Price">{{ course.price }}</td>
+                      <td data-label="Duration">{{ course.duration }}</td>
+                      <td data-label="Materials">
                         <a
                           href="{{ url_for('admin.upload_material', course_id=course.id) }}"
                           class="btn btn-secondary"
                           >Upload Material</a
                         >
                       </td>
-                      <td>
+                      <td data-label="Actions">
                         <a
                           href="{{ url_for('admin.edit_course', course_id=course.id) }}"
                           class="btn btn-primary"
@@ -220,7 +344,6 @@
                 </table>
               </section>
             </div>
-
             <!-- Instructors Tab -->
             <div
               class="tab-pane fade"
@@ -244,8 +367,8 @@
                   <tbody>
                     {% for instructor in instructors %}
                     <tr>
-                      <td>{{ instructor.id }}</td>
-                      <td>
+                      <td data-label="ID">{{ instructor.id }}</td>
+                      <td data-label="Profile Image">
                         {% if instructor.profile_image %}
                         <img
                           src="{{ url_for('static', filename='profile_images/' + instructor.profile_image) }}"
@@ -254,12 +377,15 @@
                         />
                         {% else %} No Image {% endif %}
                       </td>
-                      <td>{{ instructor.fullname }}</td>
-                      <td>{{ instructor.email }}</td>
-                      <td>{{ instructor.phone_number }}</td>
-                      <td>{{ instructor.house_address }}</td>
-
-                      <td>
+                      <td data-label="Full Name">{{ instructor.fullname }}</td>
+                      <td data-label="Email">{{ instructor.email }}</td>
+                      <td data-label="Phone Number">
+                        {{ instructor.phone_number }}
+                      </td>
+                      <td data-label="House Address">
+                        {{ instructor.house_address }}
+                      </td>
+                      <td data-label="Actions">
                         <a
                           href="{{ url_for('admin.edit_instructor', instructor_id=instructor.id) }}"
                           class="btn btn-primary"
@@ -309,8 +435,8 @@
                   <tbody>
                     {% for student in students %}
                     <tr>
-                      <td>{{ student.id }}</td>
-                      <td>
+                      <td data-label="ID">{{ student.id }}</td>
+                      <td data-label="Profile Image">
                         {% if student.profile_image %}
                         <img
                           src="{{ url_for('static', filename='uploads/' + student.profile_image) }}"
@@ -320,12 +446,16 @@
                         />
                         {% else %} No Image {% endif %}
                       </td>
-                      <td>{{ student.firstname }}</td>
-                      <td>{{ student.lastname }}</td>
-                      <td>{{ student.user.email }}</td>
-                      <td>{{ student.phone_number }}</td>
-                      <td>{{ student.house_address }}</td>
-                      <td>
+                      <td data-label="First Name">{{ student.firstname }}</td>
+                      <td data-label="Last Name">{{ student.lastname }}</td>
+                      <td data-label="Email">{{ student.user.email }}</td>
+                      <td data-label="Phone Number">
+                        {{ student.phone_number }}
+                      </td>
+                      <td data-label="House Address">
+                        {{ student.house_address }}
+                      </td>
+                      <td data-label="Actions">
                         <form
                           action="{{ url_for('admin.delete_student', student_id=student.id) }}"
                           method="POST"
@@ -370,14 +500,18 @@
                   <tbody>
                     {% for item in cart_items %}
                     <tr>
-                      <td>{{ item.id }}</td>
-                      <td>{{ item.course.title }}</td>
-                      <td>{{ item.course.category }}</td>
-                      <td>#{{ item.course.price }}</td>
-                      <td>{{ item.user.email }}</td>
-                      <td>{{ item.user.student_profile.phone_number }}</td>
-                      <td>{{ item.date_added.strftime('%Y-%m-%d') }}</td>
-                      <td>
+                      <td data-label="ID">{{ item.id }}</td>
+                      <td data-label="Course Title">{{ item.course.title }}</td>
+                      <td data-label="Category">{{ item.course.category }}</td>
+                      <td data-label="Price">#{{ item.course.price }}</td>
+                      <td data-label="User Email">{{ item.user.email }}</td>
+                      <td data-label="User Phone">
+                        {{ item.user.student_profile.phone_number }}
+                      </td>
+                      <td data-label="Date Added">
+                        {{ item.date_added.strftime('%Y-%m-%d') }}
+                      </td>
+                      <td data-label="Actions">
                         <form
                           action="{{ url_for('admin.admin_remove_from_cart', cart_id=item.id) }}"
                           method="POST"
@@ -417,13 +551,19 @@
                   <tbody>
                     {% for payment in payments %}
                     <tr>
-                      <td>{{ payment.id }}</td>
-                      <td>{{ payment.student.user.username }}</td>
-                      <td>{{ payment.course.title }}</td>
-                      <td># {{ payment.amount }}</td>
-                      <td>{{ payment.reference }}</td>
-                      <td>{{ payment.status }}</td>
-                      <td>{{ payment.timestamp }}</td>
+                      <td data-label="ID">{{ payment.id }}</td>
+                      <td data-label="User">
+                        {% if payment.user %} {{ payment.user.username }} {%
+                        else %} Unknown {% endif %}
+                      </td>
+                      <td data-label="Course">
+                        {% if payment.course %} {{ payment.course.title }} {%
+                        else %} Unknown {% endif %}
+                      </td>
+                      <td data-label="Amount"># {{ payment.amount }}</td>
+                      <td data-label="Reference">{{ payment.reference }}</td>
+                      <td data-label="Status">{{ payment.status }}</td>
+                      <td data-label="Timestamp">{{ payment.timestamp }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
@@ -432,26 +572,17 @@
             </div>
           </div>
 
-          <div style="display: flex">
-            <div class="row justify-content-center" style="margin-left: 1rem">
-              <div class="">
-                <a
-                  href="{{ url_for('admin.create_instructor') }}"
-                  class="btn btn-primary btn-block rounded-0 px-4"
-                  >Create Instructor Profile</a
-                >
-              </div>
-            </div>
-
-            <div class="row justify-content-center" style="margin-left: 43rem">
-              <div class="">
-                <a
-                  href="{{ url_for('admin.add_course') }}"
-                  class="btn btn-primary btn-block rounded-0 px-4"
-                  >Add New Course</a
-                >
-              </div>
-            </div>
+          <div class="vertical-buttons" style="margin-top: 20px">
+            <a
+              href="{{ url_for('admin.create_instructor') }}"
+              class="btn btn-primary btn-block rounded-0 px-4"
+              >Create Instructor Profile</a
+            >
+            <a
+              href="{{ url_for('admin.add_course') }}"
+              class="btn btn-primary btn-block rounded-0 px-4"
+              >Add New Course</a
+            >
           </div>
         </div>
       </div>

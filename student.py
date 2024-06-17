@@ -7,12 +7,18 @@ from pypstk.payment import Payment
 from db import db, app
 from model import *
 from forms import *
+import requests
 
 student = Blueprint(
     'student', __name__,
     template_folder='templates',
     static_folder='static'
   )
+
+app.config['secret_key'] = os.environ.get('secret_key')
+
+secret_key = app.config['secret_key']
+PAYSTACK_BASE_URL = "https://api.paystack.co"
 
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'static/uploads')
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
@@ -135,33 +141,125 @@ def remove_from_cart(cart_id):
     flash('Course removed from cart.', 'success')
     return redirect(url_for('student.view_cart'))
 
+def initialize_payment(email, amount):
+    try:
+        amount_in_kobo = int(float(amount) * 100)  # Convert to kobo
+    except ValueError:
+        raise ValueError("Invalid amount format")
 
-@student.route('/payment', methods=['GET', 'POST'])
-@login_required
-def payment():
-    course_id = request.args.get('course_id')
-    course = Course.query.get_or_404(course_id)
-    user = current_user
-    
-        
-    if request.method == 'POST':
-        if 'amount' in request.form:
-            email = current_user.email
-            amount = request.form['amount']
-
-
-            pay = Payment(email=email, amount=amount, course_id=course_id, sk=sk)
-            response = pay.initialize_transaction()
-            auth_url = response['auth_url']
-            print(auth_url)
-            
-
-            if auth_url:
-                return auth_url
-            else:
-                flash('Error initiating payment.', category='error')
-                return redirect(url_for('home'))
-        else:
-            return jsonify({'error': 'Amount not provided in the form data.'}), 400
+    headers = {
+        "Authorization": f"Bearer {secret_key}",
+        "Content-Type": "application/json",
+    }
+    data = {
+        "email": email,
+        "amount": amount_in_kobo,
+    }
+    response = requests.post(f"{PAYSTACK_BASE_URL}/transaction/initialize", headers=headers, json=data)
+    if response.status_code == 200:
+        response_data = response.json()
+        return response_data['data']['authorization_url'], response_data['data']['reference']
     else:
-        return render_template('payment.html', course=course)
+        return None, None
+
+@student.route('/course/<int:course_id>/payment', methods=['GET', 'POST'])
+@login_required
+def payment(course_id):
+    course = Course.query.get_or_404(course_id)
+    if request.method == 'POST':
+        email = request.form.get('email')
+        amount = request.form.get('amount')
+
+        # Ensure the amount is correctly formatted
+        try:
+            amount = float(amount)
+        except ValueError:
+            flash('Invalid amount format.', 'danger')
+            return redirect(url_for('student.payment', course_id=course.id))
+
+        auth_url, reference = initialize_payment(email, amount)
+
+        if auth_url:
+            # Save the payment details to the database
+            payment = Payment(
+                amount=amount,
+                reference=reference,
+                email=email,
+                course_id=course.id,
+                user_id=current_user.id,  # Ensure user_id is set
+                status='initialized'
+            )
+            db.session.add(payment)
+            db.session.commit()
+            return redirect(auth_url)
+        else:
+            flash('An error occurred while initializing payment.', 'danger')
+            return redirect(url_for('student.payment', course_id=course.id))
+    return render_template('payment.html', course=course)
+
+
+# @student.route('/course/<int:course_id>/payment', methods=['GET', 'POST'])
+# @login_required
+# def payment(course_id):
+#     course = Course.query.get_or_404(course_id)
+#     if request.method == 'POST':
+#         email = request.form.get('email')
+#         amount = request.form.get('amount')
+
+#         # Ensure the amount is correctly formatted
+#         try:
+#             amount = float(amount)
+#         except ValueError:
+#             flash('Invalid amount format.', 'danger')
+#             return redirect(url_for('student.payment', course_id=course.id))
+
+#         auth_url, reference = initialize_payment(email, amount)
+
+#         if auth_url:
+#             # Save the payment details to the database
+#             payment = Payment(
+#                 amount=amount,
+#                 reference=reference,
+#                 email=email,
+#                 course_id=course.id,
+#                 user_id=current_user.id,  # Ensure user_id is set
+#                 status='initialized'
+#             )
+#             db.session.add(payment)
+#             db.session.commit()
+#             return redirect(auth_url)
+#         else:
+#             flash('An error occurred while initializing payment.', 'danger')
+#             return redirect(url_for('student.payment', course_id=course.id))
+#     return render_template('payment.html', course=course)
+
+@student.route('/verify_payment/<reference>')
+def verify_payment(reference):
+    headers = {
+        "Authorization": f"Bearer {secret_key}",
+        "Content-Type": "application/json",
+    }
+    response = requests.get(f"{PAYSTACK_BASE_URL}/transaction/verify/{reference}", headers=headers)
+    if response.status_code == 200:
+        response_data = response.json()
+        if response_data['data']['status'] == 'success':
+            payment = Payment.query.filter_by(reference=reference).first()
+            payment.status = 'success'
+            db.session.commit()
+
+            # Remove the course from the cart
+            cart_item = Cart.query.filter_by(user_id=payment.user_id, course_id=payment.course_id).first()
+            if cart_item:
+                db.session.delete(cart_item)
+                db.session.commit()
+
+            flash('Payment successful!', 'success')
+            return redirect(url_for('course', course_id=payment.course_id))
+
+    flash('Payment verification failed.', 'danger')
+    return redirect(url_for('home'))
+
+
+
+
+    

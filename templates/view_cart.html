@@ -173,52 +173,58 @@
       </div>
 
       <div class="container mt-5">
-        <h1>Your Cart</h1>
+        <h1 class="text-center">Your Cart</h1>
         {% if cart_items %}
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Course Title</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Date Added</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in cart_items %}
-            <tr>
-              <td>{{ item.course.title }}</td>
-              <td>{{ item.course.category }}</td>
-              <td># {{ item.course.price }}</td>
-              <td>{{ item.date_added.strftime('%Y-%m-%d') }}</td>
-              <td>
-                <!-- Link to the payment route with course_id parameter -->
-                <a
-                  href="{{ url_for('student.payment', course_id=item.course.id) }}"
-                  class="btn btn-primary btn-sm"
-                  >Proceed to Payment</a
-                >
-                <form
-                  action="{{ url_for('student.remove_from_cart', cart_id=item.id) }}"
-                  method="POST"
-                  style="display: inline-block"
-                >
-                  <button type="submit" class="btn btn-danger btn-sm">
-                    Remove
-                  </button>
-                </form>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Course Title</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Date Added</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in cart_items %}
+              <tr>
+                <td>{{ item.course.title }}</td>
+                <td>{{ item.course.category }}</td>
+                <td># {{ item.course.price }}</td>
+                <td>{{ item.date_added.strftime('%Y-%m-%d') }}</td>
+                <td>
+                  <div
+                    class="d-flex flex-column flex-md-row align-items-md-center"
+                  >
+                    <a
+                      href="{{ url_for('student.payment', course_id=item.course.id) }}"
+                      class="btn btn-primary btn-sm mb-2 mb-md-0 mr-md-2"
+                      >Proceed to Payment</a
+                    >
+                    <form
+                      action="{{ url_for('student.remove_from_cart', cart_id=item.id) }}"
+                      method="POST"
+                    >
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        Remove
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
         {% else %}
-        <p>Your cart is empty.</p>
+        <p class="text-center">Your cart is empty.</p>
         {% endif %}
-        <a href="{{ url_for('home') }}" class="btn btn-primary"
-          >Continue Shopping</a
-        >
+        <div class="text-center">
+          <a href="{{ url_for('home') }}" class="btn btn-primary"
+            >Continue Shopping</a
+          >
+        </div>
       </div>
 
       <div class="footer" style="margin-top: 30px">

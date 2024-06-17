@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from db import db, app
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -51,7 +52,6 @@ class Course(db.Model):
     image = db.Column(db.String(150), nullable=False)
     category = db.Column(db.String(100), nullable=False)
     duration = db.Column(db.String(30))
-
     instructor = db.relationship('Instructor', back_populates='courses')
     payments = db.relationship('Payment', back_populates='course')
 
@@ -73,17 +73,17 @@ class Cart(db.Model):
 class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float)
-    reference = db.Column(db.String(10))
+    reference = db.Column(db.String(50))
     email = db.Column(db.String(150))
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     status = db.Column(db.String(10))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='payments')
 
     student = db.relationship('Student', back_populates='payments')
     course = db.relationship('Course', back_populates='payments')
-
-
 
 
 class CourseMaterial(db.Model):
@@ -92,10 +92,12 @@ class CourseMaterial(db.Model):
     filename = db.Column(db.String(150), nullable=False)
     filepath = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(500))
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     course = db.relationship('Course', back_populates='materials')
 
 Course.materials = db.relationship('CourseMaterial', back_populates='course', cascade='all, delete-orphan')
+
 
 
 

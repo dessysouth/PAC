@@ -1,3 +1,12 @@
 {
-  "liveServer.settings.port": 5502
+  "liveServer.settings.port": 5502,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "MySQL Local",
+      "database": "${workspaceFolder:PAC}/instance/pelah.db"
+    }
+  ],
+  "sqltools.useNodeRuntime": true
 }
