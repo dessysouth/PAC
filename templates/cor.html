@@ -300,3 +300,16 @@
                 </div>
               </div>
             </div> -->
+@admin.route('/edit_instructor/<int:instructor_id
+  >', methods=['GET', 'POST']) def edit_instructor(instructor_id): instructor =
+  Instructor.query.get_or_404(instructor_id) form =
+  EditInstructorForm(obj=instructor) if form.validate_on_submit():
+  form.populate_obj(instructor) if form.profile_image.data: filename =
+  secure_filename(form.profile_image.data.filename) filepath =
+  os.path.join(PROFILE_PICS_FOLDER, filename) if allowed_file(filename):
+  form.profile_image.data.save(filepath) instructor.profile_image = filename
+  else: flash('Invalid file format. Please upload an image file.', 'error')
+  db.session.commit() flash('Instructor profile updated successfully.',
+  'success') return redirect(url_for('admin.admin_dashboard')) return
+  render_template('edit_instructor.html', form=form, instructor=instructor)
+</int:instructor_id>

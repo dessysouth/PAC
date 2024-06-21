@@ -96,11 +96,8 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                   <li><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
-                  <li class="has-children">
+                  <li >
                     <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
-                    <ul class="dropdown">
-                      <li><a href="{{ url_for('about') }}">Our School</a></li>
-                    </ul>
                   </li>
                   <li class="active"><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
                   <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>

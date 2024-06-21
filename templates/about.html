@@ -101,7 +101,7 @@
                   <a href="{{ url_for('auth.logout') }}" class="small mr-2">Logout</a>
                   {% else %}
                   <a href="{{ url_for('auth.login') }}" class="small mr-2"><span class="icon-unlock-alt"></span> Log In</a>
-                  <a href="{{ url_for('auth.register') }}" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+                  <a href="{{ url_for('auth.register') }}" class="small btn btn-danger px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
                   {% endif %}
                 </div>
                 <div class="dropdown">
@@ -139,11 +139,8 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                   <li><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
-                  <li class="has-children active">
+                  <li class="active">
                     <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
-                    <ul class="dropdown">
-                      <li><a href="{{ url_for('about') }}">Our School</a></li>
-                    </ul>
                   </li>
                   <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
                   <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>

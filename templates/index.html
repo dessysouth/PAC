@@ -56,13 +56,13 @@
                   <div class="user-info">
                       <h2 class="small mr-2" style="font-size: 20px; display: inline;">Welcome, {{ current_user.username }}!</h2>
                       {% if current_user.student_profile and current_user.student_profile.profile_image %}
-                      <img src="{{ url_for('static', filename='uploads/' + current_user.student_profile.profile_image) }}" alt="Profile Image" class="img-fluid" style="max-width: 50px; border-radius: 50%; margin-left: 10px;">
+                      <img src="{{ url_for('static', filename='uploads/' + current_user.student_profile.profile_image) }}" alt="Profile Image" class="img-fluid" style="width: 60px; border-radius: 50%; margin-left: 10px; height: 60px;">
                       {% endif %}
                   </div>
                   <a href="{{ url_for('auth.logout') }}" class="small mr-2">Logout</a>
                   {% else %}
                   <a href="{{ url_for('auth.login') }}" class="small mr-2"><span class="icon-unlock-alt"></span> Log In</a>
-                  <a href="{{ url_for('auth.register') }}" class="small btn btn-primary px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
+                  <a href="{{ url_for('auth.register') }}" class="small btn btn-danger px-4 py-2 rounded-0"><span class="icon-users"></span> Register</a>
                   {% endif %}
                 </div>
                 <div class="dropdown">
@@ -100,11 +100,8 @@
               <nav class="site-navigation position-relative text-right" role="navigation">
                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                   <li class="active"><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
-                  <li class="has-children">
+                  <li>
                     <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
-                    <ul class="dropdown">
-                      <li><a href="{{ url_for('about') }}">Our School</a></li>
-                    </ul>
                   </li>
                   <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
                   <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>
@@ -135,7 +132,7 @@
               <div class="col-lg-12 mx-auto text-center" data-aos="fade-up">
                 <h1>
                   Pelah <br />
-                  E-Learning
+                  Arts College
                 </h1>
               </div>
             </div>
@@ -332,7 +329,7 @@
                 </div>
               </div>
               <div>
-                <p>&ldquo;Enrolling in Digital Fortress Institute was the best decision I've ever made. The hands-on projects and expert instructors helped me build a solid foundation in coding. I landed my dream job as a developer just two months after graduation!&rdquo;</p>
+                <p>&ldquo;Enrolling in Pelah Arts College was the best decision I've ever made. The hands-on projects and expert instructors helped me build a solid foundation in coding. I landed my dream job as a developer just two months after graduation!&rdquo;</p>
               </div>
             </div>
   
@@ -345,7 +342,7 @@
                 </div>
               </div>
               <div>
-                <p>&ldquo;Digital Fortress Institute exceeded our expectations. My daughter not only gained technical skills but also developed confidence and a passion for coding. The supportive community and top-notch curriculum made all the difference!&ldquo;</p>
+                <p>&ldquo;Pelah Arts College exceeded our expectations. My daughter not only gained technical skills but also developed confidence and a passion for coding. The supportive community and top-notch curriculum made all the difference!&ldquo;</p>
               </div>
             </div>
   
@@ -358,7 +355,7 @@
                 </div>
               </div>
               <div>
-                <p>&ldquo;After years in a different field, I decided to switch to tech and chose Digital Fortress Institute. The comprehensive and practical approach to teaching coding skills prepared me for a successful career transition. I highly recommend this Institute to anyone looking to break into the tech industry!&rdquo;</p>
+                <p>&ldquo;After years in a different field, I decided to switch to tech and chose Pelah Arts College. The comprehensive and practical approach to teaching coding skills prepared me for a successful career transition. I highly recommend this Institute to anyone looking to break into the tech industry!&rdquo;</p>
               </div>
             </div>
           </div>

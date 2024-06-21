@@ -1,7 +1,8 @@
 from datetime import datetime
 from flask_login import UserMixin
 from db import db, app
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import current_app
+
 
 
 class User(db.Model, UserMixin):
@@ -54,10 +55,11 @@ class Course(db.Model):
     duration = db.Column(db.String(30))
     instructor = db.relationship('Instructor', back_populates='courses')
     payments = db.relationship('Payment', back_populates='course')
-
+    materials = db.relationship('CourseMaterial', back_populates='course', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f'<Course {self.title}>'
+
 
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)

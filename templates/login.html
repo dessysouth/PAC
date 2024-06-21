@@ -57,11 +57,8 @@
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                 <li class="active"><a href="{{ url_for('home') }}" class="nav-link text-left">Home</a></li>
-                <li class="has-children">
+                <li>
                   <a href="{{ url_for('about') }}" class="nav-link text-left">About Us</a>
-                  <ul class="dropdown">
-                    <li><a href="{{ url_for('about') }}">Our School</a></li>
-                  </ul>
                 </li>
                 <li><a href="{{ url_for('courses') }}" class="nav-link text-left">Courses</a></li>
                 <li><a href="{{ url_for('contact') }}" class="nav-link text-left">Contact Us</a></li>
@@ -102,43 +99,29 @@
     </div>
 
     <div class="site-section" style="background-image: url('{{ url_for('static', filename='images/hero_1.jpg') }}');">
-      <div class="container" >
-
-          <div class="row justify-content-center">
-            <div class="col-md-5">
-                <form class="row" method="POST">
-                    <div class="col-md-12 form-group">
-                        <label for="username">Email <span>*</span></label>
-                        <input 
-                        type="email"
-                        name="email" 
-                        id="username" 
-                        class="form-control form-control-lg"
-                        required>
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <label for="pword">Password <span>*</span></label>
-                        <input 
-                        type="password" 
-                        name="password" 
-                        id="pword" 
-                        class="form-control form-control-lg"
-                        required>
-                    </div>
-                    <div class="row">
-                      <div class="col-12" style="margin-left: 15px;">
-                        <button class="btn btn-lg px-5" style="background-color: #db0c0c; color: #fff; font-weight: 700;" type="submit">Login</button>
-                        
-                      </div>
-                  </div>
-                </form>
-                
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-5" style="background-color: rgba(240, 255, 255, 0.612);">
+                    <h2 class="text-center">Login</h2>
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                        <div class="form-group text-center">
+                            <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Sign Up</a></p>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </div>
-        </form>
-        
-        
-      </div>
+        </div>
     </div>
 
     <div class="footer">

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Identity Card</title>
+    <!-- Include necessary CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .card-title1 {
+        margin-right: 10rem;
+      }
+      .card {
+        width: 500px;
+        margin: 20px;
+        padding: 10px;
+        padding-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .card img {
+        max-width: 100%;
+        height: auto;
+      }
+      @media print {
+        @page {
+          size: landscape;
+          margin: 0;
+        }
+        body * {
+          visibility: hidden;
+        }
+        .card,
+        .card * {
+          visibility: visible;
+        }
+        .card {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          padding-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <img
+          style="width: 70px"
+          src="{{ url_for('static', filename='images/WhatsApp_Image_2024-03-08_at_08.55.48_e7c7c63c.png') }}"
+          alt="Image"
+          class="img-fluid"
+        />
+        <h5 class="card-title1 mt-2">Identity Card</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <img
+              src="{{ url_for('static', filename='profile_images/' + profile.profile_image) }}"
+              alt="Profile Image"
+              class="img-fluid"
+              style="width: 150px; height: 135px"
+            />
+          </div>
+          <div class="col-md-8">
+            {% if profile.__class__.__name__ == 'Student' %}
+            <h5 class="card-title">
+              {{ profile.firstname }} {{ profile.lastname }}
+            </h5>
+            <p class="card-text">
+              <strong>Email:</strong> {{ profile.user.email }}
+            </p>
+            <p class="card-text">
+              <strong>Student ID:</strong> {{ profile.id }}
+            </p>
+            <p class="card-text">
+              <strong>Phone Number:</strong> {{ profile.phone_number }}
+            </p>
+            {% elif profile.__class__.__name__ == 'Instructor' %}
+            <h5 class="card-title">{{ profile.fullname }}</h5>
+            <p class="card-text">
+              <strong>Instructor ID:</strong> {{ profile.id }}
+            </p>
+            <p class="card-text"><strong>Email:</strong> {{ profile.email }}</p>
+            <p class="card-text">
+              <strong>Phone Number:</strong> {{ profile.phone_number }}
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include necessary JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      function saveIdentityCard() {
+        fetch(
+          "/generate_identity_card/{{ profile.__class__.__name__.lower() }}/{{ profile.id }}",
+          {
+            method: "GET",
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href =
+                "/download_identity_card?file_path=" + data.file_path;
+              alert("Identity card saved successfully!");
+            } else {
+              alert("Failed to save identity card: " + data.error);
+            }
+          })
+          .catch((error) => {
+            console.error("Error saving identity card:", error);
+            alert("Failed to save identity card.");
+          });
+      }
+
+      function printIdentityCard() {
+        window.print();
+      }
+    </script>
+  </body>
+</html>

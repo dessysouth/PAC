@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for,send_from_directory, abort
-from flask_login import current_user, LoginManager
+from flask_login import current_user, LoginManager, login_required
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 import os
@@ -11,6 +11,7 @@ from student import student
 from db import db, app
 from model import *
 from forms import *
+from flask_mail import Mail
 
 # Configuration
 app.config['SECRET_KEY'] = 'dnlmc/m;nclnsajx'
@@ -20,6 +21,9 @@ login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 load_dotenv()
 sk = os.environ.get('PAYSTACK_SECRET_KEY')
+
+app.config.from_object('config.Config')
+mail = Mail(app)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -82,6 +86,7 @@ def courses():
 
 
 @app.route('/course/<int:course_id>')
+@login_required
 def course(course_id):
     course = Course.query.get_or_404(course_id)
     payment_exists = False

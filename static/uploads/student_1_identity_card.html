@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Identity Card</title>
+    <!-- Include necessary CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      .card {
+        width: 300px;
+        margin: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-header">
+        <img
+          src="/static/college_logo.png"
+          alt="College Logo"
+          class="img-fluid"
+        />
+        <h5 class="card-title mt-2">
+          Identity Card - Student
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <img
+              src="/static/profile_images/person_2.jpg"
+              alt="Profile Image"
+              class="img-fluid"
+            />
+          </div>
+          <div class="col-md-8">
+            <h5 class="card-title">
+               Adenike Jacob  
+            </h5>
+            <p class="card-text">
+              <strong>Email:</strong> devanikeola@gmail.com
+            </p>
+            
+            <p class="card-text">
+              <strong>Student ID:</strong> 1
+            </p>
+            <p class="card-text">
+              <strong>Phone Number:</strong> 09067898448
+            </p>
+            <p class="card-text">
+              <strong>House Address:</strong> 23 sasha road
+            </p>
+            
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" onclick="saveIdentityCard()">
+          Save
+        </button>
+        <button class="btn btn-secondary" onclick="printIdentityCard()">
+          Print
+        </button>
+      </div>
+    </div>
+
+    <!-- Include necessary JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      function saveIdentityCard() {
+        fetch(
+          "/generate_identity_card/student/1",
+          {
+            method: "GET",
+          }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "/download_identity_card/" + data.filename;
+              alert("Identity card saved successfully!");
+            } else {
+              alert("Failed to save identity card: " + data.error);
+            }
+          })
+          .catch((error) => {
+            console.error("Error saving identity card:", error);
+            alert("Failed to save identity card.");
+          });
+      }
+
+      function printIdentityCard() {
+        window.print();
+      }
+    </script>
+  </body>
+</html>

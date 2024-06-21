@@ -158,8 +158,10 @@ def initialize_payment(email, amount):
     response = requests.post(f"{PAYSTACK_BASE_URL}/transaction/initialize", headers=headers, json=data)
     if response.status_code == 200:
         response_data = response.json()
+        print("Payment initialized:", response_data)
         return response_data['data']['authorization_url'], response_data['data']['reference']
     else:
+        print("Error initializing payment:", response.text)
         return None, None
 
 @student.route('/course/<int:course_id>/payment', methods=['GET', 'POST'])
@@ -180,14 +182,22 @@ def payment(course_id):
         auth_url, reference = initialize_payment(email, amount)
 
         if auth_url:
+            # Fetch the student profile associated with the current user
+            student_profile = Student.query.filter_by(user_id=current_user.id).first()
+
+            if not student_profile:
+                flash('Student profile not found.', 'danger')
+                return redirect(url_for('student.payment', course_id=course.id))
+
             # Save the payment details to the database
             payment = Payment(
                 amount=amount,
                 reference=reference,
                 email=email,
                 course_id=course.id,
-                user_id=current_user.id,  # Ensure user_id is set
-                status='initialized'
+                user_id=current_user.id,
+                student_id=student_profile.id,
+                status='success'
             )
             db.session.add(payment)
             db.session.commit()
@@ -196,42 +206,6 @@ def payment(course_id):
             flash('An error occurred while initializing payment.', 'danger')
             return redirect(url_for('student.payment', course_id=course.id))
     return render_template('payment.html', course=course)
-
-
-# @student.route('/course/<int:course_id>/payment', methods=['GET', 'POST'])
-# @login_required
-# def payment(course_id):
-#     course = Course.query.get_or_404(course_id)
-#     if request.method == 'POST':
-#         email = request.form.get('email')
-#         amount = request.form.get('amount')
-
-#         # Ensure the amount is correctly formatted
-#         try:
-#             amount = float(amount)
-#         except ValueError:
-#             flash('Invalid amount format.', 'danger')
-#             return redirect(url_for('student.payment', course_id=course.id))
-
-#         auth_url, reference = initialize_payment(email, amount)
-
-#         if auth_url:
-#             # Save the payment details to the database
-#             payment = Payment(
-#                 amount=amount,
-#                 reference=reference,
-#                 email=email,
-#                 course_id=course.id,
-#                 user_id=current_user.id,  # Ensure user_id is set
-#                 status='initialized'
-#             )
-#             db.session.add(payment)
-#             db.session.commit()
-#             return redirect(auth_url)
-#         else:
-#             flash('An error occurred while initializing payment.', 'danger')
-#             return redirect(url_for('student.payment', course_id=course.id))
-#     return render_template('payment.html', course=course)
 
 @student.route('/verify_payment/<reference>')
 def verify_payment(reference):
@@ -242,24 +216,26 @@ def verify_payment(reference):
     response = requests.get(f"{PAYSTACK_BASE_URL}/transaction/verify/{reference}", headers=headers)
     if response.status_code == 200:
         response_data = response.json()
+        print("Verification response:", response_data)
         if response_data['data']['status'] == 'success':
             payment = Payment.query.filter_by(reference=reference).first()
-            payment.status = 'success'
-            db.session.commit()
-
-            # Remove the course from the cart
-            cart_item = Cart.query.filter_by(user_id=payment.user_id, course_id=payment.course_id).first()
-            if cart_item:
-                db.session.delete(cart_item)
+            if payment:
+                payment.status = 'successful'
                 db.session.commit()
 
-            flash('Payment successful!', 'success')
-            return redirect(url_for('course', course_id=payment.course_id))
+                # Remove the course from the cart
+                cart_item = Cart.query.filter_by(user_id=payment.user_id, course_id=payment.course_id).first()
+                if cart_item:
+                    db.session.delete(cart_item)
+                    db.session.commit()
 
-    flash('Payment verification failed.', 'danger')
-    return redirect(url_for('home'))
-
-
-
-
-    
+                flash('Payment successful!', 'success')
+                return redirect(url_for('student.course', course_id=payment.course_id))
+            else:
+                print("Payment not found in the database.")
+                flash('Payment not found in the database.', 'danger')
+                return redirect(url_for('student.courses'))
+    else:
+        print("Payment verification failed:", response.text)
+        flash('Payment verification failed.', 'danger')
+        return redirect(url_for('student.courses'))

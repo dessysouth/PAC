@@ -1,11 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, DecimalField, SubmitField, FileField
+from wtforms import StringField, TextAreaField, DecimalField, SubmitField, FileField, PasswordField
 from wtforms.validators import DataRequired, NumberRange, Length, Email, EqualTo
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, TextAreaField, DecimalField, FileField
 from wtforms.validators import InputRequired, NumberRange
 from wtforms_sqlalchemy.fields import QuerySelectField
 from model import *
+
+# class RequestResetForm(FlaskForm):
+#     email = StringField('Email', validators=[DataRequired(), Email()])
+#     submit = SubmitField('Request Password Reset')
+
+# class ResetPasswordForm(FlaskForm):
+#     password = PasswordField('Password', validators=[DataRequired()])
+#     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+#     submit = SubmitField('Reset Password')
 
 
 class CourseForm(FlaskForm):
@@ -26,6 +35,15 @@ class StudentProfileForm(FlaskForm):
     house_address = StringField('House Address', validators=[DataRequired()])
     profile_image = FileField('Profile Image')
     submit = SubmitField('Save Changes')
+
+class EditStudentForm(FlaskForm):
+    firstname = StringField('First Name', validators=[DataRequired()])
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    middlename = StringField('Middle Name')
+    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    house_address = StringField('House Address', validators=[DataRequired()])
+    profile_image = FileField('Profile Image')
+    submit = SubmitField('Update Profile')
     
 
 class CreateInstructorForm(FlaskForm):
@@ -35,6 +53,8 @@ class CreateInstructorForm(FlaskForm):
     house_address = StringField('House Address', validators=[DataRequired()])
     profile_image = FileField('Profile Image', validators=[DataRequired()])
     submit = SubmitField('Create Instructor')
+
+
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -68,9 +88,6 @@ class EditInstructorForm(FlaskForm):
 
 class CourseMaterialForm(FlaskForm):
     description = StringField('Description', validators=[DataRequired()])
-    file = FileField('File', validators=[
-        FileRequired(),
-        FileAllowed(['pdf', 'docx', 'pptx', 'txt'], 'Documents only!')
-    ])
+    file = FileField('File', validators=[DataRequired()])
     submit = SubmitField('Upload')
 

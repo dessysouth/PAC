@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, abort, current_app
+from flask import Blueprint, render_template, request, flash, redirect, url_for, abort, jsonify, send_file
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
 import os
@@ -21,9 +21,10 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.static_folder, 'course_materials'
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
+app.config['MAX_CONTENT_PATH'] = 16 * 1024 * 1024
 # Set upload folder for profile pictures
 PROFILE_PICS_FOLDER = 'static/uploads/profile_pics'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx'}
 
 # Ensure the profile pictures folder exists
 if not os.path.exists(PROFILE_PICS_FOLDER):
@@ -49,7 +50,8 @@ def admin_dashboard():
     cart_items = Cart.query.all()
     payments = Payment.query.all()
     students = Student.query.all()
-    instructors = Instructor.query.all()  # Fetch all instructors
+    instructors = Instructor.query.all()
+    course_materials = CourseMaterial.query.all()
 
     # Debugging print statements
     for instructor in instructors:
@@ -59,7 +61,8 @@ def admin_dashboard():
         print(f"Student: {student.firstname}, Image: {student.profile_image}")
 
     return render_template('admin.html', courses=courses, cart_items=cart_items, payments=payments,
-                           instructors=instructors, students=students)
+                           instructors=instructors, students=students, course_materials=course_materials)
+
 
 @admin.route('/delete_instructor/<int:instructor_id>', methods=['POST'])
 # @login_required
@@ -129,7 +132,6 @@ def create_instructor():
     return render_template('create_instructor_profile.html', form=form)
 
 @admin.route('/edit_instructor/<int:instructor_id>', methods=['GET', 'POST'])
-# @login_required
 def edit_instructor(instructor_id):
     instructor = Instructor.query.get_or_404(instructor_id)
     form = EditInstructorForm(obj=instructor)
@@ -147,6 +149,36 @@ def edit_instructor(instructor_id):
         flash('Instructor profile updated successfully.', 'success')
         return redirect(url_for('admin.admin_dashboard'))
     return render_template('edit_instructor.html', form=form, instructor=instructor)
+
+@admin.route('/edit_student_profile/<int:student_id>', methods=['GET', 'POST'])
+
+def edit_student_profile(student_id):
+    student = Student.query.get_or_404(student_id)
+    form = EditStudentForm(obj=student)
+    next_page = request.args.get('next')
+
+    if form.validate_on_submit():
+        # Process form data
+        student.firstname = form.firstname.data
+        student.lastname = form.lastname.data
+        student.middlename = form.middlename.data
+        student.phone_number = form.phone_number.data
+        student.house_address = form.house_address.data
+        profile_image = form.profile_image.data
+
+        # Save profile image if provided
+        if profile_image:
+            filename = profile_image.filename
+            profile_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            student.profile_image = filename
+
+        db.session.commit()
+
+        flash('Student profile updated successfully.', 'success')
+        return redirect(next_page or url_for('admin.admin_dashboard'))
+
+    return render_template('edit_student_profile.html', form=form, student=student, next=next_page)
+
 
 @admin.route('/add_course', methods=['GET', 'POST'])
 def add_course():
@@ -213,33 +245,75 @@ def upload_material(course_id):
 
     if form.validate_on_submit():
         file = form.file.data
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        
-        # Ensure unique filename
-        if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            os.makedirs(app.config['UPLOAD_FOLDER'])
-        
-        # Save the file
-        file.save(filepath)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'])
+            
+            file.save(filepath)
 
-        new_material = CourseMaterial(
-            course_id=course.id,
-            filename=filename,
-            filepath=filepath,
-            description=form.description.data
-        )
+            new_material = CourseMaterial(
+                course_id=course.id,
+                filename=filename,
+                filepath=filepath,
+                description=form.description.data
+            )
 
+            try:
+                db.session.add(new_material)
+                db.session.commit()
+                flash('Material uploaded successfully!', 'success')
+                return redirect(url_for('admin.admin_dashboard'))
+            except Exception as e:
+                db.session.rollback()
+                flash(f'An error occurred: {e}', 'danger')
+        else:
+            flash('Invalid file format. Please upload a valid file.', 'danger')
+
+    return render_template('upload_material.html', form=form, course=course)
+
+@admin.route('/admin/delete_material/<int:material_id>', methods=['POST'])
+def delete_material(material_id):
+    material = CourseMaterial.query.get_or_404(material_id)
+    db.session.delete(material)
+    db.session.commit()
+    return redirect(url_for('admin.admin_dashboard'))
+
+@admin.route('/edit_material/<int:material_id>', methods=['GET', 'POST'])
+# @login_required
+def edit_material(material_id):
+    material = CourseMaterial.query.get_or_404(material_id)
+    form = CourseMaterialForm(obj=material)
+    
+    if form.validate_on_submit():
+        if form.file.data:
+            filename = secure_filename(form.file.data.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            
+            # Save the new file
+            form.file.data.save(filepath)
+            
+            # Remove old file if it exists
+            if material.filepath and os.path.exists(material.filepath):
+                os.remove(material.filepath)
+                
+            material.filename = filename
+            material.filepath = filepath
+            
+        material.description = form.description.data
+        
         try:
-            db.session.add(new_material)
             db.session.commit()
-            flash('Material uploaded successfully!', 'success')
-            return redirect(url_for('admin.admin_dashboard'))  # Redirect to admin dashboard
+            flash('Material updated successfully!', 'success')
+            return redirect(url_for('admin.admin_dashboard'))
         except Exception as e:
             db.session.rollback()
             flash(f'An error occurred: {e}', 'danger')
+    
+    return render_template('edit_material.html', form=form, material=material)
 
-    return render_template('upload_material.html', form=form, course=course)
 
 @admin.route('/edit_course/<int:course_id>', methods=['GET', 'POST'])
 # @login_required  # Uncomment if login is required to edit courses
@@ -345,14 +419,55 @@ def admin_payments():
     payments = Payment.query.filter_by(status='success').all()
     return render_template('admin/payments.html', payments=payments)
 
-# @admin.route('/register_admin', methods=['GET'])
-# def register_admin():
-#     with app.app_context():
-#         email = 'jacobbolarin@gmail.com'
-#         password = 'funke1328'
-#         hashed_password = generate_password_hash(password).encode('utf-8')
-#         new_admin = Admin(email=email, password=hashed_password)
-#         db.session.add(new_admin)
-#         db.session.commit()
-#         return 'Admin registered successfully!'
+@admin.route('/fetch_profile/<profile_type>/<int:id>', methods=['GET'])
+def fetch_profile(profile_type, id):
+    try:
+        print(f"Fetching profile: Type={profile_type}, ID={id}")
+        if profile_type == 'student':
+            profile = Student.query.get(id)
+        elif profile_type == 'instructor':
+            profile = Instructor.query.get(id)
+        else:
+            print(f"Invalid profile type: {profile_type}")
+            return jsonify({'error': 'Invalid profile type'}), 400
 
+        if not profile:
+            print(f"{profile_type.capitalize()} not found: ID={id}")
+            return jsonify({'error': f'{profile_type.capitalize()} not found'}), 404
+
+        print(f"Profile found: Type={profile_type}, ID={id}")
+        return render_template('identity_card.html', profile=profile, profile_type=profile_type)
+    except Exception as e:
+        print(f"Error fetching profile: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@admin.route('/generate_identity_card/<profile_type>/<int:id>', methods=['GET'])
+def generate_identity_card(profile_type, id):
+    try:
+        if profile_type == 'student':
+            profile = Student.query.get(id)
+        elif profile_type == 'instructor':
+            profile = Instructor.query.get(id)
+        else:
+            return jsonify({'error': 'Invalid profile type'}), 400
+
+        if not profile:
+            return jsonify({'error': f'{profile_type.capitalize()} not found'}), 404
+
+        html_content = render_template('identity_card.html', profile=profile, profile_type=profile_type)
+        pdf_file_path = f'/tmp/identity_card_{profile_type}_{id}.pdf'
+        HTML(string=html_content).write_pdf(pdf_file_path)
+
+        return jsonify({'success': True, 'file_path': pdf_file_path})
+    except Exception as e:
+        print(f"Error generating PDF: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@admin.route('/download_identity_card', methods=['POST'])
+def download_identity_card():
+    file_path = request.form['file_path']
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return jsonify({'error': 'File not found'}), 404

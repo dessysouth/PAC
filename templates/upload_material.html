@@ -1,33 +1,29 @@
-<!-- upload_material.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload Material</title>
-    <style>
-      .container {
-        width: 60%;
-        margin: 0 auto;
-        font-family: sans-serif;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
   </head>
   <body>
-    <div class="container">
+    <div class="container mt-5">
       <h1>Upload Material for {{ course.title }}</h1>
       <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        <div>
-          {{ form.description.label }}<br />
-          {{ form.description(size=100) }}<br />
+        <div class="form-group">
+          {{ form.description.label(class="form-label") }} {{
+          form.description(class="form-control") }}
         </div>
-        <div>
-          {{ form.file.label }}<br />
-          {{ form.file }}<br />
+        <div class="form-group">
+          {{ form.file.label(class="form-label") }} {{
+          form.file(class="form-control") }}
         </div>
-        <div>{{ form.submit() }}</div>
+        <div class="form-group">{{ form.submit(class="btn btn-primary") }}</div>
       </form>
     </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
   </body>
 </html>
