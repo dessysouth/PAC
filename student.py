@@ -143,7 +143,7 @@ def remove_from_cart(cart_id):
 
 def initialize_payment(email, amount):
     try:
-        amount_in_kobo = int(float(amount) * 100)  # Convert to kobo
+        amount_in_kobo = int(float(amount) * 100)
     except ValueError:
         raise ValueError("Invalid amount format")
 
