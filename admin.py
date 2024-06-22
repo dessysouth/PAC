@@ -44,7 +44,7 @@ def save_image(file, folder):
         raise ValueError('File not allowed')
 
 
-@admin.route('/admin', methods=['GET'])
+@admin.route('/bolarin', methods=['GET'])
 def admin_dashboard():
     courses = Course.query.all()
     cart_items = Cart.query.all()
