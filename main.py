@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for,send_from_directory, abort
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory, abort, g, session
 from flask_login import current_user, LoginManager, login_required
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
@@ -58,6 +58,13 @@ def allowed_profile_pic(filename):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@app.context_processor
+def inject_cart_count():
+    cart_count = 0
+    if current_user.is_authenticated:
+        cart_count = Cart.query.filter_by(user_id=current_user.id).count()
+    return dict(cart_count=cart_count)
 
 # Routes
 @app.route('/')
@@ -119,6 +126,16 @@ def open_material(material_id):
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():    
     return render_template('contact.html')
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        g.cart_count = Cart.query.filter_by(user_id=current_user.id).count()
+        g.cart_items = Cart.query.filter_by(user_id=current_user.id).all()
+    else:
+        g.cart_count = 0
+        g.cart_items = []
+
 
 app.register_blueprint(auth)
 app.register_blueprint(admin)

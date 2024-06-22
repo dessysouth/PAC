@@ -784,33 +784,43 @@ h5,
 
 /* Blocks */
 .intro-section {
-  background-size: cover;
   position: relative;
+  background-size: cover;
 }
+
 .intro-section,
 .intro-section .container .row {
-  height: 100vh;
-  min-height: 900px;
+  height: 100vh; /* Fallback for browsers that do not support min-height */
+  min-height: 900px; /* Adjust as needed for larger screens */
 }
+
 .intro-section:before {
   content: "";
   position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
-  background: #222;
-  opacity: 0.7;
-  border-bottom-right-radius: 0px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #222; /* Fallback background color */
+  opacity: 0.7; /* Adjust opacity as desired */
+  z-index: 0; /* Ensure it's behind other content */
 }
+
 @media (max-width: 991.98px) {
+  .intro-section,
+  .intro-section .container .row {
+    min-height: 100vh; /* Adjust for smaller screens */
+  }
+
   .intro-section:before {
+    background-size: cover;
+    background-position: center;
     width: 100%;
   }
 }
+
 .intro-section h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 900;
   color: #fff;
 }
