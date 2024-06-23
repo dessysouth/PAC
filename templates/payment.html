@@ -92,6 +92,7 @@
                 {% endif %}
               </div>
               <div class="dropdown">
+                {% if g.cart_count > 0 %}
                 <a
                   href="#"
                   class="dropdown-toggle"
@@ -137,6 +138,7 @@
                     >View Cart</a
                   >
                 </div>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -177,11 +179,12 @@
                           name="email" 
                           id="email" 
                           class="form-control form-control-lg"
-                          required>
+                          required
+                          readonly>
                       </div>
                       <div class="col-md-12 form-group">
                           <label for="amount">Amount <span>*</span></label>
-                          <input type="number" name="amount" class="form-control form-control-lg" id="amount" required placeholder="Enter amount">
+                          <input type="number" name="amount" class="form-control form-control-lg" readonly id="amount" required placeholder="Enter amount">
                       </div>
                       <div class="row">
                           <div class="col-12">

@@ -16,6 +16,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mb.YTPlayer.min.css') }}" media="all" type="text/css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+  <style>
+    label {
+      color: #000;
+    }
+  </style>
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -92,7 +97,7 @@
         </div>
     </div> 
 
-    <div class="custom-breadcrumns border-bottom">
+    <div class="custom-breadcrumbs border-bottom">
       <div class="container">
         <a href="{{url_for('home')}}">Home</a>
         <span class="mx-3 icon-keyboard_arrow_right"></span>
@@ -118,12 +123,17 @@
                 <input type="password" name="password1" id="pword" class="form-control form-control-lg">
               </div>
               <div class="col-md-12 form-group">
-                <label for="pword2"> Password</label>
+                <label for="pword2">Confirm Password</label>
                 <input type="password" name="password2" id="pword2" class="form-control form-control-lg">
               </div>
               <div class="row">
-                <div class="col-12">
-                  <input type="submit" value="Register" class="btn btn-danger btn-lg px-5" style="margin-left: 130px;">
+                <div class="col-12 text-center">
+                  <input type="submit" value="Register" class="btn btn-primary btn-lg px-5" style="margin-left: 130px;">
+                </div>
+              </div>
+              <div class="row mt-2 ml-2">
+                <div class="col-12 text-center">
+                  <p>Have an account? <a href="{{ url_for('auth.login') }}">Sign In</a></p>
                 </div>
               </div>
             </form>
@@ -203,8 +213,6 @@
   <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
   <script src="{{ url_for('static', filename='js/jquery.mb.YTPlayer.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
 </body>
 
 </html>

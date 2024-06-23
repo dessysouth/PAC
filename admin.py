@@ -44,7 +44,7 @@ def save_image(file, folder):
         raise ValueError('File not allowed')
 
 
-@admin.route('/bolarin', methods=['GET'])
+@admin.route('/oluwawomisan', methods=['GET'])
 def admin_dashboard():
     courses = Course.query.all()
     cart_items = Cart.query.all()
@@ -53,19 +53,18 @@ def admin_dashboard():
     instructors = Instructor.query.all()
     course_materials = CourseMaterial.query.all()
 
-    # Debugging print statements
-    for instructor in instructors:
-        print(f"Instructor: {instructor.fullname}, Image: {instructor.profile_image}")
+    # # Debugging print statements
+    # for instructor in instructors:
+    #     print(f"Instructor: {instructor.fullname}, Image: {instructor.profile_image}")
 
-    for student in students:
-        print(f"Student: {student.firstname}, Image: {student.profile_image}")
+    # for student in students:
+    #     print(f"Student: {student.firstname}, Image: {student.profile_image}")
 
     return render_template('admin.html', courses=courses, cart_items=cart_items, payments=payments,
                            instructors=instructors, students=students, course_materials=course_materials)
 
 
 @admin.route('/delete_instructor/<int:instructor_id>', methods=['POST'])
-# @login_required
 def delete_instructor(instructor_id):
     instructor = Instructor.query.get_or_404(instructor_id)
     try:
@@ -82,7 +81,6 @@ def delete_instructor(instructor_id):
     return redirect(url_for('admin.admin_dashboard'))
 
 @admin.route('/delete_student/<int:student_id>', methods=['POST'])
-# @login_required
 def delete_student(student_id):
     student = Student.query.get_or_404(student_id)
     try:

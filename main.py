@@ -22,8 +22,6 @@ login_manager.login_view = 'auth.login'
 load_dotenv()
 sk = os.environ.get('PAYSTACK_SECRET_KEY')
 
-app.config.from_object('config.Config')
-mail = Mail(app)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -7,16 +7,6 @@ from wtforms.validators import InputRequired, NumberRange
 from wtforms_sqlalchemy.fields import QuerySelectField
 from model import *
 
-# class RequestResetForm(FlaskForm):
-#     email = StringField('Email', validators=[DataRequired(), Email()])
-#     submit = SubmitField('Request Password Reset')
-
-# class ResetPasswordForm(FlaskForm):
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-#     submit = SubmitField('Reset Password')
-
-
 class CourseForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
